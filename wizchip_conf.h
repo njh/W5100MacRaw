@@ -517,38 +517,6 @@ void   wizchip_sw_reset(void);
  */
 int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
 
-#if _WIZCHIP_ > 5100
-   int8_t wizphy_getphylink(void);              ///< get the link status of phy in WIZCHIP. No use in W5100
-   int8_t wizphy_getphypmode(void);             ///< get the power mode of PHY in WIZCHIP. No use in W5100
-#endif
-
-#if _WIZCHIP_ == 5500
-   void   wizphy_reset(void);                   ///< Reset phy. Vailid only in W5500
-/**
- * @ingroup extra_functions
- * @brief Set the phy information for WIZCHIP without power mode
- * @param phyconf : @ref wiz_PhyConf
- */
-   void   wizphy_setphyconf(wiz_PhyConf* phyconf);  
- /**
- * @ingroup extra_functions
- * @brief Get phy configuration information.
- * @param phyconf : @ref wiz_PhyConf
- */
-   void   wizphy_getphyconf(wiz_PhyConf* phyconf); 
- /**
- * @ingroup extra_functions
- * @brief Get phy status.
- * @param phyconf : @ref wiz_PhyConf
- */ 
-   void   wizphy_getphystat(wiz_PhyConf* phyconf);
- /**
- * @ingroup extra_functions
- * @brief set the power mode of phy inside WIZCHIP. Refer to @ref PHYCFGR in W5500, @ref PHYSTATUS in W5200
- * @param pmode Settig value of power down mode.
- */   
-   int8_t wizphy_setphypmode(uint8_t pmode);    
-#endif
 
 /**
 * @ingroup extra_functions
