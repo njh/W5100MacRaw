@@ -10,30 +10,30 @@
 //!
 //! Copyright (c)  2013, WIZnet Co., LTD.
 //! All rights reserved.
-//! 
-//! Redistribution and use in source and binary forms, with or without 
-//! modification, are permitted provided that the following conditions 
-//! are met: 
-//! 
-//!     * Redistributions of source code must retain the above copyright 
-//! notice, this list of conditions and the following disclaimer. 
+//!
+//! Redistribution and use in source and binary forms, with or without
+//! modification, are permitted provided that the following conditions
+//! are met:
+//!
+//!     * Redistributions of source code must retain the above copyright
+//! notice, this list of conditions and the following disclaimer.
 //!     * Redistributions in binary form must reproduce the above copyright
 //! notice, this list of conditions and the following disclaimer in the
-//! documentation and/or other materials provided with the distribution. 
-//!     * Neither the name of the <ORGANIZATION> nor the names of its 
-//! contributors may be used to endorse or promote products derived 
-//! from this software without specific prior written permission. 
-//! 
+//! documentation and/or other materials provided with the distribution.
+//!     * Neither the name of the <ORGANIZATION> nor the names of its
+//! contributors may be used to endorse or promote products derived
+//! from this software without specific prior written permission.
+//!
 //! THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-//! AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+//! AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 //! IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-//! ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
-//! LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
-//! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+//! ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+//! LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
 //! SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-//! INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-//! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-//! ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+//! INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+//! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+//! ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 //! THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
@@ -79,20 +79,20 @@
  * - @ref WIZCHIP_register_W5100 : @ref Common_register_group_W5100 and @ref Socket_register_group_W5100
  * - @ref WIZCHIP_IO_Functions_W5100 : @ref Basic_IO_function_W5100, @ref Common_register_access_function_W5100 and @ref Socket_register_group_W5100
  */
- 
- /**
- * @defgroup WIZCHIP_register_W5100 WIZCHIP register
- * @ingroup W5100
- * @brief WIZCHIP register defines register group of <b> W5100 </b>.
- *
- * - \ref Common_register_group_W5100 : Common register group W5100
- * - \ref Socket_register_group_W5100 : \c SOCKET n register group W5100
- */
- 
+
+/**
+* @defgroup WIZCHIP_register_W5100 WIZCHIP register
+* @ingroup W5100
+* @brief WIZCHIP register defines register group of <b> W5100 </b>.
+*
+* - \ref Common_register_group_W5100 : Common register group W5100
+* - \ref Socket_register_group_W5100 : \c SOCKET n register group W5100
+*/
+
 
 /**
  * @defgroup WIZCHIP_IO_Functions_W5100 WIZCHIP I/O functions
- * @ingroup W5100 
+ * @ingroup W5100
  * @brief This supports the basic I/O functions for \ref WIZCHIP_register_W5100.
  *
  * - <b> Basic I/O function </b> \n
@@ -102,7 +102,7 @@
  * 	-# @b Mode \n
  *    getMR(), setMR()
  * 	-# @b Interrupt \n
- *    getIR(), setIR(), getIMR(), setIMR(), 
+ *    getIR(), setIR(), getIMR(), setIMR(),
  * 	-# <b> Network Information </b> \n
  *    getSHAR(), setSHAR(), getGAR(), setGAR(), getSUBR(), setSUBR(), getSIPR(), setSIPR()
  * 	-# @b Retransmission \n
@@ -125,7 +125,7 @@
  *      getSn_FRAG(), setSn_FRAG(),  getSn_TOS(), setSn_TOS() \n
  *      getSn_TTL(), setSn_TTL()
  */
- 
+
 /**
  * @defgroup Common_register_group_W5100 Common register
  * @ingroup WIZCHIP_register_W5100
@@ -141,37 +141,37 @@
  */
 
 
- /**
- * @defgroup Socket_register_group_W5100 Socket register
- * @ingroup WIZCHIP_register_W5100
- * @brief Socket register group\n
- * Socket register configures and control SOCKETn which is necessary to data communication.
- * @details
- * @sa Sn_MR, Sn_CR, Sn_IR : SOCKETn Control
- * @sa Sn_SR, Sn_PORT, Sn_DHAR, Sn_DIPR, Sn_DPORT : SOCKETn Information
- * @sa Sn_MSSR, Sn_TOS, Sn_TTL, Sn_FRAG : Internet protocol.
- * @sa Sn_RXMEM_SIZE, Sn_TXMEM_SIZE, Sn_TX_FSR, Sn_TX_RD, Sn_TX_WR, Sn_RX_RSR, Sn_RX_RD, Sn_RX_WR : Data communication
- */
- 
- /**
- * @defgroup Basic_IO_function_W5100 Basic I/O function
- * @ingroup WIZCHIP_IO_Functions_W5100
- * @brief These are basic input/output functions to read values from register or write values to register.
- */
+/**
+* @defgroup Socket_register_group_W5100 Socket register
+* @ingroup WIZCHIP_register_W5100
+* @brief Socket register group\n
+* Socket register configures and control SOCKETn which is necessary to data communication.
+* @details
+* @sa Sn_MR, Sn_CR, Sn_IR : SOCKETn Control
+* @sa Sn_SR, Sn_PORT, Sn_DHAR, Sn_DIPR, Sn_DPORT : SOCKETn Information
+* @sa Sn_MSSR, Sn_TOS, Sn_TTL, Sn_FRAG : Internet protocol.
+* @sa Sn_RXMEM_SIZE, Sn_TXMEM_SIZE, Sn_TX_FSR, Sn_TX_RD, Sn_TX_WR, Sn_RX_RSR, Sn_RX_RD, Sn_RX_WR : Data communication
+*/
+
+/**
+* @defgroup Basic_IO_function_W5100 Basic I/O function
+* @ingroup WIZCHIP_IO_Functions_W5100
+* @brief These are basic input/output functions to read values from register or write values to register.
+*/
 
 /**
  * @defgroup Common_register_access_function_W5100 Common register access functions
  * @ingroup WIZCHIP_IO_Functions_W5100
  * @brief These are functions to access <b>common registers</b>.
  */
- 
+
 /**
  * @defgroup Socket_register_access_function_W5100 Socket register access functions
  * @ingroup WIZCHIP_IO_Functions_W5100
  * @brief These are functions to access <b>socket registers</b>.
  */
- 
- //-----------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------
 
 //----------------------------- W5100 Common Registers IOMAP -----------------------------
 /**
@@ -238,7 +238,7 @@
  * - \ref IR_SOCK(3)  : SOCKET 3 Interrupt
  * - \ref IR_SOCK(2)  : SOCKET 2 Interrupt
  * - \ref IR_SOCK(1)  : SOCKET 1 Interrupt
- * - \ref IR_SOCK(0)  : SOCKET 0 Interrupt 
+ * - \ref IR_SOCK(0)  : SOCKET 0 Interrupt
  */
 #define IR					(_W5100_IO_BASE_ + (0x0015)) // Interrupt
 
@@ -329,7 +329,7 @@
  * 		<tr>   <td><b>Protocol[3]</b></td> <td><b>Protocol[2]</b></td> <td><b>Protocol[1]</b></td> <td><b>Protocol[0]</b></td> <td>@b Meaning</td>   </tr>
  * 		<tr>   <td>0</td> <td>1</td> <td>0</td> <td>0</td> <td>MACRAW</td>   </tr>
  * 		<tr>   <td>0</td> <td>1</td> <td>0</td> <td>1</td> <td>PPPoE</td>   </tr>
- * </table> 
+ * </table>
  *	 - \ref Sn_MR_MACRAW	: MAC LAYER RAW SOCK \n
  *  - \ref Sn_MR_UDP		: UDP
  *  - \ref Sn_MR_TCP		: TCP
@@ -362,7 +362,7 @@
  * 		<tr>   <td>0x25</td> <td>PCR</td> <td>In each phase, it transmits REQ message.</td> </tr>
  * 		<tr>   <td>0x26</td> <td>PCN</td> <td>In each phase, it transmits NAK message.</td> </tr>
  * 		<tr>   <td>0x27</td> <td>PCJ</td> <td>In each phase, it transmits REJECT message.</td> </tr>
- * </table> 
+ * </table>
  */
 #define Sn_CR(sn)			(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0001)) // channel Sn_CR register
 
@@ -606,7 +606,7 @@
 
 /**
  * @brief Get the destination unreachable message in UDP sending.
- * @details When receiving the ICMP (Destination port unreachable) packet, this bit is set as 
+ * @details When receiving the ICMP (Destination port unreachable) packet, this bit is set as
  * When this bit is  Destination Information such as IP address and Port number may be checked with the corresponding @ref UIPR & @ref UPORTR.
  */
 #define IR_UNREACH			0x40 ///< check destination unreachable
@@ -620,7 +620,7 @@
 #define IR_SOCK(sn)		(0x01 << sn)	///< check socket interrupt
 
 
-// Sn_MR values 
+// Sn_MR values
 /* Sn_MR Default values */
 /**
  * @brief Unused socket
@@ -722,7 +722,7 @@
  * In this mode, Socket n operates as a 'TCP server' and waits for connection-request (SYN packet) from any 'TCP client'.//
  * The \ref Sn_SR changes the state from SOCK_INIT to SOCKET_LISTEN.//
  * When a 'TCP client' connection request is successfully established,
- * the \ref Sn_SR changes from SOCK_LISTEN to SOCK_ESTABLISHED and the Sn_IR(0) becomes 
+ * the \ref Sn_SR changes from SOCK_LISTEN to SOCK_ESTABLISHED and the Sn_IR(0) becomes
  * But when a 'TCP client' connection request is failed, Sn_IR(3) becomes and the status of \ref Sn_SR changes to SOCK_CLOSED.
  */
 #define Sn_CR_LISTEN		0x02 ///< wait connection request in tcp mode(Server mode) 
@@ -801,45 +801,45 @@
 /**
  * @brief Closes PPPoE connection
  * @details Closes PPPoE connection
- */		 
-#define Sn_CR_PDISCON		0x24		 
+ */
+#define Sn_CR_PDISCON		0x24
 
 /**
  * @brief REQ message transmission
  * @details In each phase, it transmits REQ message.
  */
-#define Sn_CR_PCR			0x25		 
+#define Sn_CR_PCR			0x25
 
 /**
  * @brief NAK massage transmission
  * @details In each phase, it transmits NAK message.
  */
-#define Sn_CR_PCN			0x26		
+#define Sn_CR_PCN			0x26
 
 /**
  * @brief REJECT message transmission
  * @details In each phase, it transmits REJECT message.
  */
-#define Sn_CR_PCJ			0x27		
+#define Sn_CR_PCJ			0x27
 
 /* Sn_IR values */
 /**
  * @brief PPP Receive Interrupt
  * @details PPP Receive Interrupts when the option which is not supported is received.
  */
-#define Sn_IR_PRECV			0x80	
+#define Sn_IR_PRECV			0x80
 
 /**
  * @brief PPP Fail Interrupt
  * @details PPP Fail Interrupts when PAP Authentication is failed.
- */	
-#define Sn_IR_PFAIL			0x40		
+ */
+#define Sn_IR_PFAIL			0x40
 
 /**
  * @brief PPP Next Phase Interrupt
  * @details PPP Next Phase Interrupts when the phase is changed during ADSL connection process.
  */
-#define Sn_IR_PNEXT			0x20		
+#define Sn_IR_PNEXT			0x20
 
 /**
  * @brief SEND_OK Interrupt
@@ -993,7 +993,7 @@ connection.
  */
 #define SOCK_PPPOE			0x5F ///< pppoe socket 
 
-// IP PROTOCOL 
+// IP PROTOCOL
 #define IPPROTO_IP			0 ///< Dummy for IP 
 #define IPPROTO_ICMP		   1 ///< Control message protocol 
 #define IPPROTO_IGMP		   2 ///< Internet group management protocol 
@@ -1044,7 +1044,7 @@ connection.
 /**
  * @ingroup extra_functions
  * @brief Reset WIZCHIP by softly.
- */ 
+ */
 void   wizchip_sw_reset(void);
 
 /**
@@ -1103,7 +1103,7 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @param (uint8_t)mr The value to be set.
  * @sa getMR()
  */
-   #define setMR(mr) 	WIZCHIP_WRITE(MR,mr)
+#define setMR(mr) 	WIZCHIP_WRITE(MR,mr)
 
 /**
  * @ingroup Common_register_access_function_W5100
@@ -1111,8 +1111,8 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint8_t. The value of Mode register.
  * @sa setMR()
  */
-   #define getMR() 		WIZCHIP_READ(MR)
-   
+#define getMR() 		WIZCHIP_READ(MR)
+
 /**
  * @ingroup Common_register_access_function_W5100
  * @brief Set @ref GAR.
@@ -1275,7 +1275,7 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint8_t. Value of @ref RMSR register.
  * @sa setRMSR()
  */
- #define getRMSR()   \
+#define getRMSR()   \
       WIZCHIP_READ() // Receicve Memory Size
 
 /**
