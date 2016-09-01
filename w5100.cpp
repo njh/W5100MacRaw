@@ -40,7 +40,99 @@
 
 #include "w5100.h"
 
-#if   (_WIZCHIP_ == 5100)
+#include <SPI.h>
+
+
+/**
+ * @brief Default function to select chip.
+ * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+ * null function is called.
+ */
+void wizchip_cs_select(void)
+{
+    digitalWrite(SS, LOW);
+}
+
+/**
+ * @brief Default function to deselect chip.
+ * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+ * null function is called.
+ */
+void wizchip_cs_deselect(void)
+{
+    digitalWrite(SS, HIGH);
+}
+
+/**
+ * @brief Default function to read in SPI interface.
+ * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+ * null function is called.
+ */
+uint8_t wizchip_spi_readbyte(void)
+{
+    return SPI.transfer(0);
+}
+
+/**
+ * @brief Default function to write in SPI interface.
+ * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+ * null function is called.
+ */
+void 	wizchip_spi_writebyte(uint8_t wb)
+{
+    SPI.transfer(wb);
+}
+
+
+void wizchip_sw_reset(void)
+{
+   uint8_t gw[4], sn[4], sip[4];
+   uint8_t mac[6];
+   getSHAR(mac);
+   getGAR(gw);
+   getSUBR(sn);
+   getSIPR(sip);
+
+   setMR(MR_RST);
+
+   getMR(); // for delay
+   setSHAR(mac);
+   setGAR(gw);
+   setSUBR(sn);
+   setSIPR(sip);
+}
+
+int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
+{
+   int8_t i;
+   int8_t tmp = 0;
+   wizchip_sw_reset();
+   if(txsize)
+   {
+      tmp = 0;
+      for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+      {
+         tmp += txsize[i];
+         if(tmp > 16) return -1;
+      }
+      for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+         setSn_TXBUF_SIZE(i, txsize[i]);
+   }
+   if(rxsize)
+   {
+      tmp = 0;
+      for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+      {
+         tmp += rxsize[i];
+         if(tmp > 16) return -1;
+      }
+
+      for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+         setSn_RXBUF_SIZE(i, rxsize[i]);
+   }
+   return 0;
+}
+
 /**
 @brief  This function writes the data into W5200 registers.
 */
@@ -382,5 +474,3 @@ void wiz_recv_ignore(uint8_t sn, uint16_t len)
   ptr += len;
   setSn_RX_RD(sn,ptr);
 }
-
-#endif

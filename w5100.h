@@ -41,11 +41,7 @@
 #ifndef	_W5100_H_
 #define	_W5100_H_
 #include <stdint.h>
-#include "wizchip_conf.h"
 
-/// \cond DOXY_APPLY_CODE
-#if   (_WIZCHIP_ == 5100)
-/// \endcond
 
 #define _WIZCHIP_SN_BASE_  (0x0400)
 #define _WIZCHIP_SN_SIZE_  (0x0100)
@@ -69,6 +65,8 @@
 #elif (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_)
    #define _W5100_IO_BASE_    0x0000
 #endif
+
+#define _WIZCHIP_SOCK_NUM_   4   ///< The count of independant socket of @b WIZCHIP
 
 ///////////////////////////////////////
 // Definition For Legacy Chip Driver //
@@ -1056,6 +1054,23 @@ connection.
 //
 //M20150601 :  uint16_t AddrSel --> uint32_t AddrSel
 //
+
+/**
+ * @ingroup extra_functions
+ * @brief Reset WIZCHIP by softly.
+ */ 
+void   wizchip_sw_reset(void);
+
+/**
+ * @ingroup extra_functions
+ * @brief Initializes WIZCHIP with socket buffer size
+ * @param txsize Socket tx buffer sizes. If null, initialized the default size 2KB.
+ * @param rxsize Socket rx buffer sizes. If null, initialized the default size 2KB.
+ * @return 0 : succcess \n
+ *        -1 : fail. Invalid buffer size
+ */
+int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
+
 /**
  * @ingroup Basic_IO_function_W5100
  * @brief It reads 1 byte value from a register.
@@ -1846,9 +1861,6 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
  */
 void wiz_recv_ignore(uint8_t sn, uint16_t len);
 
-/// @cond DOXY_APPLY_CODE
-#endif
-/// @endcond
 
 #endif //_W5100_H_
 
