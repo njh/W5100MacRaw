@@ -138,18 +138,16 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
 */
 void     WIZCHIP_WRITE(uint32_t AddrSel, uint8_t wb )
 {
-   WIZCHIP_CRITICAL_ENTER();
-   WIZCHIP.CS._select();
+   //WIZCHIP_CRITICAL_ENTER();
+   wizchip_cs_select();
 
-#if( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_))
-   WIZCHIP.IF.SPI._write_byte(0xF0);
-   WIZCHIP.IF.SPI._write_byte((AddrSel & 0xFF00) >>  8);
-   WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF) >>  0);
-   WIZCHIP.IF.SPI._write_byte(wb);    // Data write (write 1byte data)
-#endif
+   wizchip_spi_writebyte(0xF0);
+   wizchip_spi_writebyte((AddrSel & 0xFF00) >>  8);
+   wizchip_spi_writebyte((AddrSel & 0x00FF) >>  0);
+   wizchip_spi_writebyte(wb);    // Data write (write 1byte data)
 
-   WIZCHIP.CS._deselect();
-   WIZCHIP_CRITICAL_EXIT();
+   wizchip_cs_deselect();
+   //WIZCHIP_CRITICAL_EXIT();
 }
 /**
 @brief  This function reads the value from W5200 registers.
@@ -158,18 +156,16 @@ uint8_t  WIZCHIP_READ(uint32_t AddrSel)
 {
    uint8_t ret;
 
-   WIZCHIP_CRITICAL_ENTER();
-   WIZCHIP.CS._select();
+   //WIZCHIP_CRITICAL_ENTER();
+   wizchip_cs_select();
 
-#if( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_))
-   WIZCHIP.IF.SPI._write_byte(0x0F);
-   WIZCHIP.IF.SPI._write_byte((AddrSel & 0xFF00) >>  8);
-   WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF) >>  0);
-   ret = WIZCHIP.IF.SPI._read_byte(); 
-#endif
+   wizchip_spi_writebyte(0x0F);
+   wizchip_spi_writebyte((AddrSel & 0xFF00) >>  8);
+   wizchip_spi_writebyte((AddrSel & 0x00FF) >>  0);
+   ret = wizchip_spi_readbyte(); 
 
-   WIZCHIP.CS._deselect();
-   WIZCHIP_CRITICAL_EXIT();
+   wizchip_cs_deselect();
+   //WIZCHIP_CRITICAL_EXIT();
    return ret;
 }
 
@@ -181,26 +177,24 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
    uint16_t i = 0;
 
-   WIZCHIP_CRITICAL_ENTER();
-   WIZCHIP.CS._select();   //M20150601 : Moved here.
+   //WIZCHIP_CRITICAL_ENTER();
+   wizchip_cs_select();   //M20150601 : Moved here.
 
-#if( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_))
   for(i = 0; i < len; i++)
   {
      //M20160715 : Depricated "M20150601 : Remove _select() to top-side"
      //            CS should be controlled every SPI frames
-     WIZCHIP.CS._select();
-     WIZCHIP.IF.SPI._write_byte(0xF0);
-     WIZCHIP.IF.SPI._write_byte((((uint16_t)(AddrSel+i)) & 0xFF00) >>  8);
-     WIZCHIP.IF.SPI._write_byte((((uint16_t)(AddrSel+i)) & 0x00FF) >>  0);
-     WIZCHIP.IF.SPI._write_byte(pBuf[i]);    // Data write (write 1byte data)
+     wizchip_cs_select();
+     wizchip_spi_writebyte(0xF0);
+     wizchip_spi_writebyte((((uint16_t)(AddrSel+i)) & 0xFF00) >>  8);
+     wizchip_spi_writebyte((((uint16_t)(AddrSel+i)) & 0x00FF) >>  0);
+     wizchip_spi_writebyte(pBuf[i]);    // Data write (write 1byte data)
      //M20160715 : Depricated "M20150601 : Remove _select() to top-side"
-	  WIZCHIP.CS._deselect();
+	  wizchip_cs_deselect();
   }
-#endif
    
-   WIZCHIP.CS._deselect();  //M20150601 : Moved here.
-   WIZCHIP_CRITICAL_EXIT();
+   wizchip_cs_deselect();  //M20150601 : Moved here.
+   //WIZCHIP_CRITICAL_EXIT();
 }
 
 /**
@@ -210,26 +204,24 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 void     WIZCHIP_READ_BUF (uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
    uint16_t i = 0;
-   WIZCHIP_CRITICAL_ENTER();
-   WIZCHIP.CS._select();   //M20150601 : Moved here.
+   //WIZCHIP_CRITICAL_ENTER();
+   wizchip_cs_select();   //M20150601 : Moved here.
    
-   #if( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_))
    for(i = 0; i < len; i++)
    {
      //M20160715 : Depricated "M20150601 : Remove _select() to top-side"
      //            CS should be controlled every SPI frames
-     WIZCHIP.CS._select();
-      WIZCHIP.IF.SPI._write_byte(0x0F);
-      WIZCHIP.IF.SPI._write_byte((uint16_t)((AddrSel+i) & 0xFF00) >>  8);
-      WIZCHIP.IF.SPI._write_byte((uint16_t)((AddrSel+i) & 0x00FF) >>  0);
-      pBuf[i] = WIZCHIP.IF.SPI._read_byte(); 
+     wizchip_cs_select();
+      wizchip_spi_writebyte(0x0F);
+      wizchip_spi_writebyte((uint16_t)((AddrSel+i) & 0xFF00) >>  8);
+      wizchip_spi_writebyte((uint16_t)((AddrSel+i) & 0x00FF) >>  0);
+      pBuf[i] = wizchip_spi_readbyte(); 
      //M20160715 : Depricated "M20150601 : Remove _select() to top-side"
-	  WIZCHIP.CS._deselect();
+	  wizchip_cs_deselect();
    }
-#endif
 
-   WIZCHIP.CS._deselect();    //M20150601 : Moved Here.
-   WIZCHIP_CRITICAL_EXIT();
+   wizchip_cs_deselect();    //M20150601 : Moved Here.
+   //WIZCHIP_CRITICAL_EXIT();
 }
 
 ///////////////////////////////////

@@ -43,6 +43,9 @@
 #include <stdint.h>
 
 
+#define W5100_SPI_SS 10
+
+
 #define _WIZCHIP_SN_BASE_  (0x0400)
 #define _WIZCHIP_SN_SIZE_  (0x0100)
 #define _WIZCHIP_IO_TXBUF_ (0x4000) /* Internal Tx buffer address of the iinchip */
@@ -1015,9 +1018,6 @@ connection.
  */
 #define WIZCHIP_CRITICAL_ENTER()    WIZCHIP.CRIS._enter()
 
-#ifdef _exit
-#undef _exit
-#endif
 
 /**
  * @brief Exit a critical section
