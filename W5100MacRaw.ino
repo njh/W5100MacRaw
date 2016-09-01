@@ -3,8 +3,6 @@
 
 const int sockNum = 0;
 
-W5100Class w5100;
-
 
 void printPaddedHex(uint8_t byte)
 {
@@ -33,31 +31,34 @@ void printMACAddress(const uint8_t address[6])
 
 int read(uint8_t *buffer, uint16_t bufsize)
 {
-    uint16_t ptr=0;
-
-    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-
-    int16_t ret = w5100.getRXReceivedSize(sockNum);
-    if (ret > 0) {
-        uint8_t head[8];
+    uint16_t len = getSn_RX_RSR(sockNum);
+    if ( len > 0 )
+    {
+        uint8_t head[2];
         uint16_t data_len=0;
 
-        ptr = w5100.readSnRX_RD(sockNum);
+        wiz_recv_data(sockNum, head, 2);
+        setSn_CR(sockNum, Sn_CR_RECV);
+        while(getSn_CR(sockNum));
 
-        w5100.read_data(sockNum, ptr, head, 2);
-        ptr+=2;
         data_len = head[0];
-        data_len = (data_len<<8) + head[1] - 2;
+        data_len = (data_len<<8) + head[1];
+        data_len -= 2;
 
-        w5100.read_data(sockNum, ptr, buffer, data_len);
-        ptr += data_len;
-        w5100.writeSnRX_RD(sockNum, ptr);
-        w5100.execCmdSn(sockNum, Sock_RECV);
+        if(data_len > bufsize)
+        {
+            Serial.println("Packet is bigger than buffer");
+            return 0;
+        }
+
+        wiz_recv_data( sockNum, buffer, data_len );
+        setSn_CR(sockNum, Sn_CR_RECV);
+        while(getSn_CR(sockNum));
+
+        return data_len;
     }
 
-    SPI.endTransaction();
-
-    return ret;
+    return 0;
 }
 
 
@@ -70,27 +71,34 @@ void setup() {
         0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
     };
 
+    pinMode(SS, OUTPUT);
+    digitalWrite(SS, HIGH);
+
+    SPI.begin();
+    SPI.setClockDivider(SPI_CLOCK_DIV4); // 4 MHz?
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setDataMode(SPI_MODE0);
+
     // Initialise the basic info
-    w5100.init();
-    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-    w5100.writeSHAR(mac_address);
-    SPI.endTransaction();
+    wizchip_init(NULL, NULL);
 
-    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-    w5100.writeSnMR(sockNum, SnMR::MACRAW);
-    w5100.execCmdSn(sockNum, Sock_OPEN);
-    SPI.endTransaction();
+    setSHAR(mac_address);
 
-    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-    uint8_t socketStatus = w5100.readSnSR(sockNum);
-    SPI.endTransaction();
+    setSn_MR(sockNum, Sn_MR_MACRAW);
+    setSn_CR(sockNum, Sn_CR_OPEN);
+
+    /* wait to process the command... */
+    while( getSn_CR(sockNum) ) ;
+
+    uint8_t socketCommand = getSn_CR(sockNum);
+    Serial.print("socketCommand=0x");
+    Serial.println(socketCommand, HEX);
+
+    uint8_t socketStatus = getSn_SR(sockNum);
     Serial.print("socketStatus=0x");
     Serial.println(socketStatus, HEX);
 
-    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-    uint8_t retryCount = w5100.readRCR();
-    SPI.endTransaction();
-
+    uint8_t retryCount = getRCR();
     Serial.print("retryCount=");
     Serial.println(retryCount, DEC);
 }
