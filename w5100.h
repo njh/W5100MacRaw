@@ -54,17 +54,7 @@
 
 #define WIZCHIP_OFFSET_INC(ADDR, N)    (ADDR + N) ///< Increase offset address
 
-#if (_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_DIR_)
-   #define _W5100_IO_BASE_     _WIZCHIP_IO_BASE_
-#elif (_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_INDIR_)
-	#define IDM_OR             ((_WIZCHIP_IO_BASE  + 0x0000))
-	#define IDM_AR0            ((_WIZCHIP_IO_BASE_ + 0x0001))
-	#define IDM_AR1            ((_WIZCHIP_IO_BASE_ + 0x0002))
-	#define IDM_DR             ((_WIZCHIP_IO_BASE_ + 0x0003))
-	#define _W5100_IO_BASE_    0x0000
-#elif (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_)
-   #define _W5100_IO_BASE_    0x0000
-#endif
+#define _W5100_IO_BASE_    0x0000
 
 #define _WIZCHIP_SOCK_NUM_   4   ///< The count of independant socket of @b WIZCHIP
 
@@ -196,11 +186,7 @@
  * - \ref MR_AI         	: Address Auto-Increment in Indirect Bus Interface
  * - \ref MR_IND         	: Indirect Bus Interface mode
  */
-#if _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_INDIR_
-   #define MR					(_WIZCHIP_IO_BASE_ + (0x0000))  // Mode
-#else
-   #define MR					(_W5100_IO_BASE_ + (0x0000))  // Mode
-#endif   
+#define MR					(_W5100_IO_BASE_ + (0x0000))  // Mode
 
 /**
  * @ingroup Common_register_group_W5100
@@ -1117,11 +1103,7 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @param (uint8_t)mr The value to be set.
  * @sa getMR()
  */
-#if (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_)
    #define setMR(mr) 	WIZCHIP_WRITE(MR,mr)
-#else
-   #define setMR(mr)    (*((uint8_t*)MR) = mr)
-#endif
 
 /**
  * @ingroup Common_register_access_function_W5100
@@ -1129,11 +1111,7 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint8_t. The value of Mode register.
  * @sa setMR()
  */
-#if (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_)
    #define getMR() 		WIZCHIP_READ(MR)
-#else
-   #define getMR()      (*(uint8_t*)MR)
-#endif
    
 /**
  * @ingroup Common_register_access_function_W5100
