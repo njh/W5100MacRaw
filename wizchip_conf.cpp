@@ -132,43 +132,22 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
    if(txsize)
    {
       tmp = 0;
-   //M20150601 : For integrating with W5300
-   #if _WIZCHIP_ == 5300
-      for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-      {
-         if(txsize[i] >= 64) return -1;   //No use 64KB even if W5300 support max 64KB memory allocation
-         tmp += txsize[i];
-         if(tmp > 128) return -1;
-      }
-      if(tmp % 8) return -1;
-   #else      
       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
       {
          tmp += txsize[i];
          if(tmp > 16) return -1;
       }
-   #endif
       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
          setSn_TXBUF_SIZE(i, txsize[i]);
    }
    if(rxsize)
    {
       tmp = 0;
-   #if _WIZCHIP_ == 5300
-      for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-      {
-         if(rxsize[i] >= 64) return -1;   //No use 64KB even if W5300 support max 64KB memory allocation         
-         tmp += rxsize[i];
-         if(tmp > 128) return -1;
-      }
-      if(tmp % 8) return -1;
-   #else         
       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
       {
          tmp += rxsize[i];
          if(tmp > 16) return -1;
       }
-   #endif
 
       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
          setSn_RXBUF_SIZE(i, rxsize[i]);
