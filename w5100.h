@@ -61,112 +61,9 @@
 
 
 
-//-----------    defgroup --------------------------------
-
-/**
- * @defgroup W5100 W5100
- * @brief WHIZCHIP register defines and I/O functions of @b W5100.
- *
- * - @ref WIZCHIP_register_W5100 : @ref Common_register_group_W5100 and @ref Socket_register_group_W5100
- * - @ref WIZCHIP_IO_Functions_W5100 : @ref Basic_IO_function_W5100, @ref Common_register_access_function_W5100 and @ref Socket_register_group_W5100
- */
-
-/**
-* @defgroup WIZCHIP_register_W5100 WIZCHIP register
-* @ingroup W5100
-* @brief WIZCHIP register defines register group of <b> W5100 </b>.
-*
-* - \ref Common_register_group_W5100 : Common register group W5100
-* - \ref Socket_register_group_W5100 : \c SOCKET n register group W5100
-*/
-
-
-/**
- * @defgroup WIZCHIP_IO_Functions_W5100 WIZCHIP I/O functions
- * @ingroup W5100
- * @brief This supports the basic I/O functions for \ref WIZCHIP_register_W5100.
- *
- * - <b> Basic I/O function </b> \n
- *   wizchip_read(), wizchip_write(), wizchip_read_buf(), wizchip_write_buf() \n\n
- *
- * - \ref Common_register_group_W5100 <b>access functions</b> \n
- * 	-# @b Mode \n
- *    getMR(), setMR()
- * 	-# @b Interrupt \n
- *    getIR(), setIR(), getIMR(), setIMR(),
- * 	-# <b> Network Information </b> \n
- *    getSHAR(), setSHAR(), getGAR(), setGAR(), getSUBR(), setSUBR(), getSIPR(), setSIPR()
- * 	-# @b Retransmission \n
- *    getRCR(), setRCR(), getRTR(), setRTR()
- * 	-# @b PPPoE \n
- *    getPTIMER(), setPTIMER(), getPMAGIC(), getPMAGIC()
- *
- * - \ref Socket_register_group_W5100 <b>access functions</b> \n
- *   -# <b> SOCKET control</b> \n
- *      getSn_MR(), setSn_MR(), getSn_CR(), setSn_CR(), getSn_IR(), setSn_IR()
- *   -# <b> SOCKET information</b> \n
- *      getSn_SR(), getSn_DHAR(), setSn_DHAR(), getSn_PORT(), setSn_PORT(), getSn_DIPR(), setSn_DIPR(), getSn_DPORT(), setSn_DPORT()
- *      getSn_MSSR(), setSn_MSSR()
- *   -# <b> SOCKET communication </b> \n
- *      getSn_RXMEM_SIZE(), setSn_RXMEM_SIZE(), getSn_TXMEM_SIZE(), setSn_TXMEM_SIZE() \n
- *      getSn_TX_RD(), getSn_TX_WR(), setSn_TX_WR() \n
- *      getSn_RX_RD(), setSn_RX_RD(), getSn_RX_WR() \n
- *      getSn_TX_FSR(), getSn_RX_RSR()
- *   -# <b> IP header field </b> \n
- *      getSn_FRAG(), setSn_FRAG(),  getSn_TOS(), setSn_TOS() \n
- *      getSn_TTL(), setSn_TTL()
- */
-
-/**
- * @defgroup Common_register_group_W5100 Common register
- * @ingroup WIZCHIP_register_W5100
- * @brief Common register group\n
- * It set the basic for the networking\n
- * It set the configuration such as interrupt, network information, ICMP, etc.
- * @details
- * @sa MR : Mode register.
- * @sa GAR, SUBR, SHAR, SIPR
- * @sa IR, Sn_IR, _IMR_  : Interrupt.
- * @sa _RTR_, _RCR_ : Data retransmission.
- * @sa PTIMER, PMAGIC : PPPoE.
- */
-
-
-/**
-* @defgroup Socket_register_group_W5100 Socket register
-* @ingroup WIZCHIP_register_W5100
-* @brief Socket register group\n
-* Socket register configures and control SOCKETn which is necessary to data communication.
-* @details
-* @sa Sn_MR, Sn_CR, Sn_IR : SOCKETn Control
-* @sa Sn_SR, Sn_PORT, Sn_DHAR, Sn_DIPR, Sn_DPORT : SOCKETn Information
-* @sa Sn_MSSR, Sn_TOS, Sn_TTL, Sn_FRAG : Internet protocol.
-* @sa Sn_RXMEM_SIZE, Sn_TXMEM_SIZE, Sn_TX_FSR, Sn_TX_RD, Sn_TX_WR, Sn_RX_RSR, Sn_RX_RD, Sn_RX_WR : Data communication
-*/
-
-/**
-* @defgroup Basic_IO_function_W5100 Basic I/O function
-* @ingroup WIZCHIP_IO_Functions_W5100
-* @brief These are basic input/output functions to read values from register or write values to register.
-*/
-
-/**
- * @defgroup Common_register_access_function_W5100 Common register access functions
- * @ingroup WIZCHIP_IO_Functions_W5100
- * @brief These are functions to access <b>common registers</b>.
- */
-
-/**
- * @defgroup Socket_register_access_function_W5100 Socket register access functions
- * @ingroup WIZCHIP_IO_Functions_W5100
- * @brief These are functions to access <b>socket registers</b>.
- */
-
-//-----------------------------------------------------------------------------------
-
 //----------------------------- W5100 Common Registers IOMAP -----------------------------
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief Mode Register address(R/W)\n
  * \ref MR is used for S/W reset, ping block mode, PPPoE mode and etc.
  * @details Each bit of \ref MR defined as follows.
@@ -183,28 +80,28 @@
 #define MR					(0x0000)  // Mode
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief Gateway IP Register address(R/W)
  * @details \ref GAR configures the default gateway address.
  */
 #define GAR     			(0x0001)  // GW Address
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief Subnet mask Register address(R/W)
  * @details \ref SUBR configures the subnet mask address.
  */
 #define SUBR    			(0x0005) // SN Mask Address
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief Source MAC Register address(R/W)
  * @details \ref SHAR configures the source hardware address.
  */
 #define SHAR    			(0x0009) // Source Hardware Address
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief Source IP Register address(R/W)
  * @details \ref SIPR configures the source IP address.
  */
@@ -214,7 +111,7 @@
 // Reserved					(0x0014)
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief Interrupt Register(R/W)
  * @details \ref IR indicates the interrupt status. Each bit of \ref IR will be still until the bit will be written to by the host.
  * If \ref IR is not equal to x00 INTn PIN is asserted to low until it is x00\n\n
@@ -234,7 +131,7 @@
 #define IR					(0x0015) // Interrupt
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief Socket Interrupt Mask Register(R/W)
  * @details Each bit of \ref _IMR_ corresponds to each bit of \ref IR.
  * When a bit of \ref _IMR_ is and the corresponding bit of \ref IR is set, Interrupt will be issued.
@@ -242,7 +139,7 @@
 #define _IMR_    			(0x0016) // Socket Interrupt Mask
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief Timeout register address( 1 is 100us )(R/W)
  * @details \ref _RTR_ configures the retransmission timeout period. The unit of timeout period is 100us and the default of \ref _RTR_ is x07D0or 000
  * And so the default timeout period is 200ms(100us X 2000). During the time configured by \ref _RTR_, W5100 waits for the peer response
@@ -252,7 +149,7 @@
 #define _RTR_     			(0x0017) // Retry Time
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief Retry count register(R/W)
  * @details \ref _RCR_ configures the number of time of retransmission.
  * When retransmission occurs as many as ref _RCR_+1 Timeout interrupt is issued (\ref Sn_IR_TIMEOUT = '1').
@@ -263,7 +160,7 @@
 
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief PPP LCP Request Timer register  in PPPoE mode(R)
  * @details \ref PATR notifies authentication method that has been agreed at the connection with
  * PPPoE Server. W5100 supports two types of Authentication method - PAP and CHAP.
@@ -272,14 +169,14 @@
 
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief PPP LCP Request Timer register  in PPPoE mode(R)
  * @details \ref PTIMER configures the time for sending LCP echo request. The unit of time is 25ms.
  */
 #define PTIMER  			(0x0028) // PPP LCP RequestTimer
 
 /**
- * @ingroup Common_register_group_W5100
+
  * @brief PPP LCP Magic number register  in PPPoE mode(R)
  * @details \ref PMAGIC configures the 4bytes magic number to be used in LCP negotiation.
  */
@@ -295,7 +192,7 @@
 //--------------------------- For Backward Compatibility ---------------------------
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief socket Mode register(R/W)
  * @details \ref Sn_MR configures the option or protocol type of Socket n.\n\n
  * Each bit of \ref Sn_MR defined as the following.
@@ -330,7 +227,7 @@
 #define Sn_MR(sn)			(WIZCHIP_SREG_BLOCK(sn) + (0x0000)) // socket Mode register
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Socket command register(R/W)
  * @details This is used to set the command for Socket n such as OPEN, CLOSE, CONNECT, LISTEN, SEND, and RECEIVE.\n
  * After W5100 accepts the command, the \ref Sn_CR register is automatically cleared to 0x00.
@@ -358,7 +255,7 @@
 #define Sn_CR(sn)			(WIZCHIP_SREG_BLOCK(sn) + (0x0001)) // channel Sn_CR register
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Socket interrupt register(R)
  * @details \ref Sn_IR indicates the status of Socket Interrupt such as establishment, termination, receiving data, timeout).\n
  * When an interrupt occurs and the corresponding bit \ref IR_SOCK(N) in \ref _IMR_ are set, \ref IR_SOCK(N) in \ref IR becomes '1'.\n
@@ -379,7 +276,7 @@
 #define Sn_IR(sn)			(WIZCHIP_SREG_BLOCK(sn) + (0x0002)) // channel interrupt register
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Socket status register(R)
  * @details \ref Sn_SR indicates the status of Socket n.\n
  * The status of Socket n is changed by \ref Sn_CR or some special control packet as SYN, FIN packet in TCP.
@@ -402,7 +299,7 @@
 #define Sn_SR(sn)			(WIZCHIP_SREG_BLOCK(sn) + (0x0003)) // channel status register
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief source port register(R/W)
  * @details \ref Sn_PORT configures the source port number of Socket n.
  * It is valid when Socket n is used in TCP/UDP mode. It should be set before OPEN command is ordered.
@@ -410,7 +307,7 @@
 #define Sn_PORT(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x0004)) // source port register
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Peer MAC register address(R/W)
  * @details \ref Sn_DHAR configures the destination hardware address of Socket n when using SEND_MAC command in UDP mode or
  * it indicates that it is acquired in ARP-process by CONNECT/SEND command.
@@ -418,7 +315,7 @@
 #define Sn_DHAR(sn)     (WIZCHIP_SREG_BLOCK(sn) + (0x0006)) // Peer MAC register address
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Peer IP register address(R/W)
  * @details \ref Sn_DIPR configures or indicates the destination IP address of Socket n. It is valid when Socket n is used in TCP/UDP mode.
  * In TCP client mode, it configures an IP address of TCP server before CONNECT command.
@@ -428,7 +325,7 @@
 #define Sn_DIPR(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x000C)) // Peer IP register address
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Peer port register address(R/W)
  * @details \ref Sn_DPORT configures or indicates the destination port number of Socket n. It is valid when Socket n is used in TCP/UDP mode.
  * In TCP clientmode, it configures the listen port number of TCP server before CONNECT command.
@@ -438,14 +335,14 @@
 #define Sn_DPORT(sn)    (WIZCHIP_SREG_BLOCK(sn) + (0x0010)) // Peer port register address
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Maximum Segment Size(Sn_MSSR0) register address(R/W)
  * @details \ref Sn_MSSR configures or indicates the MTU(Maximum Transfer Unit) of Socket n.
  */
 #define Sn_MSSR(sn)	   (WIZCHIP_SREG_BLOCK(sn) + (0x0012)) // Maximum Segment Size(Sn_MSSR0) register address
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief IP Protocol(PROTO) Register(R/W)
  * @details \ref Sn_PROTO that sets the protocol number field of the IP header at the IP layer. It is
  * valid only in IPRAW mode, and ignored in other modes.
@@ -453,7 +350,7 @@
 #define Sn_PROTO(sn)	   (WIZCHIP_SREG_BLOCK(sn) + (0x0014)) // Protocol of IP Header field register in IP raw mode
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief IP Type of Service(TOS) Register(R/W)
  * @details \ref Sn_TOS configures the TOS(Type Of Service field in IP Header) of Socket n.
  * It is set before OPEN command.
@@ -461,7 +358,7 @@
 #define Sn_TOS(sn)			(WIZCHIP_SREG_BLOCK(sn) + 0x0015) // IP Type of Service(TOS) Register 
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief IP Time to live(TTL) Register(R/W)
  * @details \ref Sn_TTL configures the TTL(Time To Live field in IP header) of Socket n.
  * It is set before OPEN command.
@@ -477,7 +374,7 @@
 // Reserved					(WIZCHIP_SREG_BLOCK(sn) + (0x001D))
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Transmit free memory size register(R)
  * @details \ref Sn_TX_FSR indicates the free size of Socket n TX Buffer Block. It is initialized to the configured size by \ref Sn_TXMEM_SIZE.
  * Data bigger than \ref Sn_TX_FSR should not be saved in the Socket n TX Buffer because the bigger data overwrites the previous saved data not yet sent.
@@ -488,7 +385,7 @@
 #define Sn_TX_FSR(sn)	(WIZCHIP_SREG_BLOCK(sn) + (0x0020)) // Transmit free memory size register
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Transmit memory read pointer register address(R)
  * @details \ref Sn_TX_RD is initialized by OPEN command. However, if Sn_MR(P[3:0]) is TCP mode(001), it is re-initialized while connecting with TCP.
  * After its initialization, it is auto-increased by SEND command.
@@ -500,7 +397,7 @@
 #define Sn_TX_RD(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x0022)) // Transmit memory read pointer register address
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Transmit memory write pointer register address(R/W)
  * @details \ref Sn_TX_WR is initialized by OPEN command. However, if Sn_MR(P[3:0]) is TCP mode(001), it is re-initialized while connecting with TCP.\n
  * It should be read or be updated like as follows.\n
@@ -514,7 +411,7 @@
 #define Sn_TX_WR(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x0024)) // Transmit memory write pointer register address
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Received data size register(R)
  * @details \ref Sn_RX_RSR indicates the data size received and saved in Socket n RX Buffer.
  * \ref Sn_RX_RSR does not exceed the \ref Sn_RXMEM_SIZE and is calculated as the difference between
@@ -523,7 +420,7 @@
 #define Sn_RX_RSR(sn)	(WIZCHIP_SREG_BLOCK(sn) + (0x0026)) // Received data size register
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Read point of Receive memory(R/W)
  * @details \ref Sn_RX_RD is initialized by OPEN command. Make sure to be read or updated as follows.\n
  * 1. Read the starting save address of the received data.\n
@@ -536,7 +433,7 @@
 #define Sn_RX_RD(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x0028)) // Read point of Receive memory
 
 /**
- * @ingroup Socket_register_group_W5100
+
  * @brief Write point of Receive memory(R)
  * @details \ref Sn_RX_WR is initialized by OPEN command and it is auto-increased by the data reception.
  * If the increased value exceeds the maximum value 0xFFFF, (greater than 0x10000 and the carry bit occurs),
@@ -1006,13 +903,13 @@ connection.
 //
 
 /**
- * @ingroup extra_functions
+
  * @brief Reset WIZCHIP by softly.
  */
 void   wizchip_sw_reset(void);
 
 /**
- * @ingroup extra_functions
+
  * @brief Initializes WIZCHIP with socket buffer size
  * @param txsize Socket tx buffer sizes. If null, initialized the default size 2KB.
  * @param rxsize Socket rx buffer sizes. If null, initialized the default size 2KB.
@@ -1022,7 +919,7 @@ void   wizchip_sw_reset(void);
 int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
 
 /**
- * @ingroup Basic_IO_function_W5100
+
  * @brief It reads 1 byte value from a register.
  * @param AddrSel Register address
  * @return The value of register
@@ -1030,7 +927,7 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
 uint8_t  wizchip_read(uint32_t AddrSel);
 
 /**
- * @ingroup Basic_IO_function_W5100
+
  * @brief It writes 1 byte value to a register.
  * @param AddrSel Register address
  * @param wb Write data
@@ -1039,7 +936,7 @@ uint8_t  wizchip_read(uint32_t AddrSel);
 void     wizchip_write(uint32_t AddrSel, uint8_t wb );
 
 /**
- * @ingroup Basic_IO_function_W5100
+
  * @brief It reads sequence data from registers.
  * @param AddrSel Register address
  * @param pBuf Pointer buffer to read data
@@ -1048,7 +945,7 @@ void     wizchip_write(uint32_t AddrSel, uint8_t wb );
 void     wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 
 /**
- * @ingroup Basic_IO_function_W5100
+
  * @brief It writes sequence data to registers.
  * @param AddrSel Register address
  * @param pBuf Pointer buffer to write data
@@ -1062,7 +959,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 /////////////////////////////////
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set Mode Register
  * @param (uint8_t)mr The value to be set.
  * @sa getMR()
@@ -1070,7 +967,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 #define setMR(mr) 	wizchip_write(MR,mr)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get @ref MR.
  * @return uint8_t. The value of Mode register.
  * @sa setMR()
@@ -1078,7 +975,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 #define getMR() 		wizchip_read(MR)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set @ref GAR.
  * @param (uint8_t*)gar Pointer variable to set gateway IP address. It should be allocated 4 bytes.
  * @sa getGAR()
@@ -1087,7 +984,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write_buf(GAR,gar,4)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get @ref GAR.
  * @param (uint8_t*)gar Pointer variable to get gateway IP address. It should be allocated 4 bytes.
  * @sa setGAR()
@@ -1096,7 +993,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read_buf(GAR,gar,4)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set @ref SUBR.
  * @param (uint8_t*)subr Pointer variable to set subnet mask address. It should be allocated 4 bytes.
  * @note If subr is null pointer, set the backup subnet to SUBR. \n
@@ -1108,7 +1005,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
       wizchip_write_buf(SUBR,subr,4)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get @ref SUBR.
  * @param (uint8_t*)subr Pointer variable to get subnet mask address. It should be allocated 4 bytes.
  * @sa setSUBR()
@@ -1117,7 +1014,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read_buf(SUBR, subr, 4)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set @ref SHAR.
  * @param (uint8_t*)shar Pointer variable to set local MAC address. It should be allocated 6 bytes.
  * @sa getSHAR()
@@ -1126,7 +1023,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write_buf(SHAR, shar, 6)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get @ref SHAR.
  * @param (uint8_t*)shar Pointer variable to get local MAC address. It should be allocated 6 bytes.
  * @sa setSHAR()
@@ -1135,7 +1032,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read_buf(SHAR, shar, 6)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set @ref SIPR.
  * @param (uint8_t*)sipr Pointer variable to set local IP address. It should be allocated 4 bytes.
  * @sa getSIPR()
@@ -1144,7 +1041,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write_buf(SIPR, sipr, 4)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get @ref SIPR.
  * @param (uint8_t*)sipr Pointer variable to get local IP address. It should be allocated 4 bytes.
  * @sa setSIPR()
@@ -1153,7 +1050,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read_buf(SIPR, sipr, 4)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set \ref IR register
  * @param (uint8_t)ir Value to set \ref IR register.
  * @sa getIR()
@@ -1161,7 +1058,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 #define setIR(ir) \
 		wizchip_write(IR, (ir & 0xA0))
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref IR register
  * @return uint8_t. Value of \ref IR register.
  * @sa setIR()
@@ -1170,7 +1067,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		(wizchip_read(IR) & 0xA0)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set \ref _IMR_ register
  * @param (uint8_t)imr Value to set @ref _IMR_ register.
  * @sa getIMR()
@@ -1179,7 +1076,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(_IMR_, imr)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref _IMR_ register
  * @return uint8_t. Value of @ref _IMR_ register.
  * @sa setIMR()
@@ -1188,7 +1085,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(_IMR_)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set \ref _RTR_ register
  * @param (uint16_t)rtr Value to set @ref _RTR_ register.
  * @sa getRTR()
@@ -1199,7 +1096,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 	}
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref _RTR_ register
  * @return uint16_t. Value of @ref _RTR_ register.
  * @sa setRTR()
@@ -1208,7 +1105,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		(((uint16_t)wizchip_read(_RTR_) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(_RTR_,1)))
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set \ref _RCR_ register
  * @param (uint8_t)rcr Value to set @ref _RCR_ register.
  * @sa getRCR()
@@ -1217,7 +1114,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(_RCR_, rcr)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref _RCR_ register
  * @return uint8_t. Value of @ref _RCR_ register.
  * @sa setRCR()
@@ -1226,7 +1123,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(_RCR_)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref RMSR register
  * @sa getRMSR()
  */
@@ -1234,7 +1131,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
       wizchip_write(RMSR) // Receicve Memory Size
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref RMSR register
  * @return uint8_t. Value of @ref RMSR register.
  * @sa setRMSR()
@@ -1243,7 +1140,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
       wizchip_read() // Receicve Memory Size
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref TMSR register
  * @sa getTMSR()
  */
@@ -1251,7 +1148,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
       wizchip_write(TMSR) // Receicve Memory Size
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref TMSR register
  * @return uint8_t. Value of @ref TMSR register.
  * @sa setTMSR()
@@ -1259,7 +1156,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref PATR register
  * @return uint16_t. Value to set \ref PATR register
  */
@@ -1267,7 +1164,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		(((uint16_t)wizchip_read(PATR) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(PATR,1)))
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref PPPALGO register
  * @return uint8_t. Value to set \ref PPPALGO register
  */
@@ -1276,7 +1173,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set \ref PTIMER register
  * @param (uint8_t)ptimer Value to set \ref PTIMER register.
  * @sa getPTIMER()
@@ -1285,7 +1182,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(PTIMER, ptimer)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref PTIMER register
  * @return uint8_t. Value of @ref PTIMER register.
  * @sa setPTIMER()
@@ -1294,7 +1191,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(PTIMER)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Set \ref PMAGIC register
  * @param (uint8_t)pmagic Value to set @ref PMAGIC register.
  * @sa getPMAGIC()
@@ -1303,7 +1200,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(PMAGIC, pmagic)
 
 /**
- * @ingroup Common_register_access_function_W5100
+
  * @brief Get \ref PMAGIC register
  * @return uint8_t. Value of @ref PMAGIC register.
  * @sa setPMAGIC()
@@ -1315,7 +1212,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 // Socket N register I/O function //
 ///////////////////////////////////
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_MR register
  * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b> expect <b>bit 4</b>.
  * @param mr Value to set @ref Sn_MR
@@ -1325,7 +1222,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(Sn_MR(sn),mr)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_MR register
  * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b> expect <b>bit 4</b>.
  * @return Value of @ref Sn_MR.
@@ -1335,7 +1232,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 	wizchip_read(Sn_MR(sn))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_CR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint8_t)cr Value to set @ref Sn_CR
@@ -1345,7 +1242,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(Sn_CR(sn), cr)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_CR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint8_t. Value of @ref Sn_CR.
@@ -1355,7 +1252,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(Sn_CR(sn))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_IR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint8_t)ir Value to set @ref Sn_IR
@@ -1365,7 +1262,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(Sn_IR(sn), ir)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_IR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint8_t. Value of @ref Sn_IR.
@@ -1375,7 +1272,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(Sn_IR(sn))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_SR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint8_t. Value of @ref Sn_SR.
@@ -1384,7 +1281,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(Sn_SR(sn))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_PORT register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint16_t)port Value to set @ref Sn_PORT.
@@ -1396,7 +1293,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 	}
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_PORT register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_PORT.
@@ -1406,7 +1303,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		(((uint16_t)wizchip_read(Sn_PORT(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_PORT(sn),1)))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_DHAR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint8_t*)dhar Pointer variable to set socket n destination hardware address. It should be allocated 6 bytes.
@@ -1416,7 +1313,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write_buf(Sn_DHAR(sn), dhar, 6)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_DHAR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint8_t*)dhar Pointer variable to get socket n destination hardware address. It should be allocated 6 bytes.
@@ -1426,7 +1323,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read_buf(Sn_DHAR(sn), dhar, 6)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_DIPR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint8_t*)dipr Pointer variable to set socket n destination IP address. It should be allocated 4 bytes.
@@ -1436,7 +1333,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write_buf(Sn_DIPR(sn), dipr, 4)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_DIPR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint8_t*)dipr Pointer variable to get socket n destination IP address. It should be allocated 4 bytes.
@@ -1446,7 +1343,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read_buf(Sn_DIPR(sn), dipr, 4)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_DPORT register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint16_t)dport Value to set @ref Sn_DPORT
@@ -1458,7 +1355,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 	}
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_DPORT register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_DPORT.
@@ -1468,7 +1365,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		(((uint16_t)wizchip_read(Sn_DPORT(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_DPORT(sn),1)))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_MSSR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint16_t)mss Value to set @ref Sn_MSSR
@@ -1480,7 +1377,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 	}
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_MSSR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_MSSR.
@@ -1490,7 +1387,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		(((uint16_t)wizchip_read(Sn_MSSR(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_MSSR(sn),1)))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_PROTO register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint8_t)proto Value to set \ref Sn_PROTO
@@ -1500,7 +1397,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(Sn_TOS(sn), tos)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_PROTO register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint8_t. Value of @ref Sn_PROTO.
@@ -1510,7 +1407,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(Sn_TOS(sn))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_TOS register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint8_t)tos Value to set @ref Sn_TOS
@@ -1520,7 +1417,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(Sn_TOS(sn), tos)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_TOS register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_ </b>.
  * @return uint8_t. Value of Sn_TOS.
@@ -1530,7 +1427,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(Sn_TOS(sn))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_TTL register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_ </b>.
  * @param (uint8_t)ttl Value to set @ref Sn_TTL
@@ -1540,7 +1437,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_write(Sn_TTL(sn), ttl)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_TTL register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_ </b>.
  * @return uint8_t. Value of @ref Sn_TTL.
@@ -1550,7 +1447,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(Sn_TTL(sn))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_RXMEM_SIZE register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_ </b>.
  * @param (uint8_t)rxmemsize Value to set \ref Sn_RXMEM_SIZE
@@ -1561,7 +1458,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 #define  setSn_RXBUF_SIZE(sn,rxmemsize) setSn_RXMEM_SIZE(sn,rxmemsize)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_RXMEM_SIZE register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint8_t. Value of @ref Sn_RXMEM.
@@ -1572,7 +1469,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 #define  getSn_RXBUF_SIZE(sn) getSn_RXMEM_SIZE(sn)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_TXMEM_SIZE register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint8_t)txmemsize Value to set \ref Sn_TXMEM_SIZE
@@ -1583,7 +1480,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 #define  setSn_TXBUF_SIZE(sn, txmemsize) setSn_TXMEM_SIZE(sn,txmemsize)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_TXMEM_SIZE register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint8_t. Value of @ref Sn_TXMEM_SIZE.
@@ -1594,7 +1491,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 #define  getSn_TXBUF_SIZE(sn) getSn_TXMEM_SIZE(sn)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_TX_FSR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_TX_FSR.
@@ -1602,7 +1499,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 uint16_t getSn_TX_FSR(uint8_t sn);
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_TX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_TX_RD.
@@ -1611,7 +1508,7 @@ uint16_t getSn_TX_FSR(uint8_t sn);
 		(((uint16_t)wizchip_read(Sn_TX_RD(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_RD(sn),1)))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_TX_WR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint16_t)txwr Value to set @ref Sn_TX_WR
@@ -1623,7 +1520,7 @@ uint16_t getSn_TX_FSR(uint8_t sn);
 		}
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_TX_WR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_TX_WR.
@@ -1633,7 +1530,7 @@ uint16_t getSn_TX_FSR(uint8_t sn);
 		(((uint16_t)wizchip_read(Sn_TX_WR(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_WR(sn),1)))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_RX_RSR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_RX_RSR.
@@ -1641,7 +1538,7 @@ uint16_t getSn_TX_FSR(uint8_t sn);
 uint16_t getSn_RX_RSR(uint8_t sn);
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_RX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint16_t)rxrd Value to set @ref Sn_RX_RD
@@ -1653,7 +1550,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 	}
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_RX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @regurn uint16_t. Value of @ref Sn_RX_RD.
@@ -1663,7 +1560,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 		(((uint16_t)wizchip_read(Sn_RX_RD(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_RD(sn),1)))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_RX_WR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint16_t)rxwr Value to set \ref Sn_RX_WR
@@ -1676,7 +1573,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_RX_WR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_RX_WR.
@@ -1685,7 +1582,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 		(((uint16_t)wizchip_read(Sn_RX_WR(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_WR(sn),1)))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Set @ref Sn_FRAG register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint16_t)frag Value to set \ref Sn_FRAG
@@ -1697,7 +1594,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 	}
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get @ref Sn_FRAG register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_FRAG.
@@ -1707,7 +1604,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 		(((uint16_t)wizchip_read(Sn_FRAG(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_FRAG(sn),1)))
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get the max RX buffer size of socket sn
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Max buffer size
@@ -1717,7 +1614,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get the max TX buffer size of socket sn
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Max buffer size
@@ -1726,7 +1623,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 		((uint16_t)(1 << getSn_TXMEM_SIZE(sn)) << 10)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get the mask of socket sn RX buffer.
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Mask value
@@ -1735,7 +1632,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 		(getSn_RxMAX(sn) - 1)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get the mask of socket sn TX buffer
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Mask value
@@ -1744,7 +1641,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 		(getSn_TxMAX(sn) - 1)
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get the base address of socket sn RX buffer.
  * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of Socket n RX buffer base address.
@@ -1752,7 +1649,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 uint32_t getSn_RxBASE(uint8_t sn);
 
 /**
- * @ingroup Socket_register_access_function_W5100
+
  * @brief Get the base address of socket sn TX buffer.
  * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of Socket n TX buffer base address.
@@ -1763,7 +1660,7 @@ uint32_t getSn_TxBASE(uint8_t sn);
 // Sn_TXBUF & Sn_RXBUF IO function //
 /////////////////////////////////////
 /**
- * @ingroup Basic_IO_function_W5100
+
  * @brief It copies data to internal TX memory
  *
  * @details This function reads the Tx write pointer register and after that,
@@ -1779,7 +1676,7 @@ uint32_t getSn_TxBASE(uint8_t sn);
 void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
 
 /**
- * @ingroup Basic_IO_function_W5100
+
  * @brief It copies data to your buffer from internal RX memory
  *
  * @details This function read the Rx read pointer register and after that,
@@ -1795,7 +1692,7 @@ void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
 void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
 
 /**
- * @ingroup Basic_IO_function_W5100
+
  * @brief It discard the received data in RX memory.
  * @details It discards the data of the length of <i>len(variable)</i> bytes in internal RX memory.
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
