@@ -57,8 +57,6 @@
 
 #define WIZCHIP_OFFSET_INC(ADDR, N)    (ADDR + N) ///< Increase offset address
 
-#define _W5100_IO_BASE_    0x0000
-
 #define _WIZCHIP_SOCK_NUM_   4   ///< The count of independant socket of @b WIZCHIP
 
 
@@ -182,38 +180,38 @@
  * - \ref MR_AI         	: Address Auto-Increment in Indirect Bus Interface
  * - \ref MR_IND         	: Indirect Bus Interface mode
  */
-#define MR					(_W5100_IO_BASE_ + (0x0000))  // Mode
+#define MR					(0x0000)  // Mode
 
 /**
  * @ingroup Common_register_group_W5100
  * @brief Gateway IP Register address(R/W)
  * @details \ref GAR configures the default gateway address.
  */
-#define GAR     			(_W5100_IO_BASE_ + (0x0001))  // GW Address
+#define GAR     			(0x0001)  // GW Address
 
 /**
  * @ingroup Common_register_group_W5100
  * @brief Subnet mask Register address(R/W)
  * @details \ref SUBR configures the subnet mask address.
  */
-#define SUBR    			(_W5100_IO_BASE_ + (0x0005)) // SN Mask Address
+#define SUBR    			(0x0005) // SN Mask Address
 
 /**
  * @ingroup Common_register_group_W5100
  * @brief Source MAC Register address(R/W)
  * @details \ref SHAR configures the source hardware address.
  */
-#define SHAR    			(_W5100_IO_BASE_ + (0x0009)) // Source Hardware Address
+#define SHAR    			(0x0009) // Source Hardware Address
 
 /**
  * @ingroup Common_register_group_W5100
  * @brief Source IP Register address(R/W)
  * @details \ref SIPR configures the source IP address.
  */
-#define SIPR    			(_W5100_IO_BASE_ + (0x000F)) // Source IP Address
+#define SIPR    			(0x000F) // Source IP Address
 
-// Reserved					(_W5100_IO_BASE_ + (0x0013))
-// Reserved					(_W5100_IO_BASE_ + (0x0014))
+// Reserved					(0x0013)
+// Reserved					(0x0014)
 
 /**
  * @ingroup Common_register_group_W5100
@@ -233,7 +231,7 @@
  * - \ref IR_SOCK(1)  : SOCKET 1 Interrupt
  * - \ref IR_SOCK(0)  : SOCKET 0 Interrupt
  */
-#define IR					(_W5100_IO_BASE_ + (0x0015)) // Interrupt
+#define IR					(0x0015) // Interrupt
 
 /**
  * @ingroup Common_register_group_W5100
@@ -241,7 +239,7 @@
  * @details Each bit of \ref _IMR_ corresponds to each bit of \ref IR.
  * When a bit of \ref _IMR_ is and the corresponding bit of \ref IR is set, Interrupt will be issued.
  */
-#define _IMR_    			(_W5100_IO_BASE_ + (0x0016)) // Socket Interrupt Mask
+#define _IMR_    			(0x0016) // Socket Interrupt Mask
 
 /**
  * @ingroup Common_register_group_W5100
@@ -251,7 +249,7 @@
  * to the packet that is transmitted by \ref Sn_CR (CONNECT, DISCON, CLOSE, SEND, SEND_MAC, SEND_KEEP command).
  * If the peer does not respond within the \ref _RTR_ time, W5100 retransmits the packet or issues timeout.
  */
-#define _RTR_     			(_W5100_IO_BASE_ + (0x0017)) // Retry Time
+#define _RTR_     			(0x0017) // Retry Time
 
 /**
  * @ingroup Common_register_group_W5100
@@ -259,9 +257,9 @@
  * @details \ref _RCR_ configures the number of time of retransmission.
  * When retransmission occurs as many as ref _RCR_+1 Timeout interrupt is issued (\ref Sn_IR_TIMEOUT = '1').
  */
-#define _RCR_      		(_W5100_IO_BASE_ + (0x0019)) // Retry Count
-#define RMSR				(_W5100_IO_BASE_ + (0x001A)) // Receicve Memory Size
-#define TMSR				(_W5100_IO_BASE_ + (0x001B)) // Trnasmit Memory Size
+#define _RCR_      		(0x0019) // Retry Count
+#define RMSR				(0x001A) // Receicve Memory Size
+#define TMSR				(0x001B) // Trnasmit Memory Size
 
 
 /**
@@ -270,7 +268,7 @@
  * @details \ref PATR notifies authentication method that has been agreed at the connection with
  * PPPoE Server. W5100 supports two types of Authentication method - PAP and CHAP.
  */
-#define PATR            (_W5100_IO_BASE_ + (0x001C))
+#define PATR            (0x001C)
 
 
 /**
@@ -278,16 +276,16 @@
  * @brief PPP LCP Request Timer register  in PPPoE mode(R)
  * @details \ref PTIMER configures the time for sending LCP echo request. The unit of time is 25ms.
  */
-#define PTIMER  			(_W5100_IO_BASE_ + (0x0028)) // PPP LCP RequestTimer
+#define PTIMER  			(0x0028) // PPP LCP RequestTimer
 
 /**
  * @ingroup Common_register_group_W5100
  * @brief PPP LCP Magic number register  in PPPoE mode(R)
  * @details \ref PMAGIC configures the 4bytes magic number to be used in LCP negotiation.
  */
-#define PMAGIC   			(_W5100_IO_BASE_ + (0x0029)) // PPP LCP Magic number
+#define PMAGIC   			(0x0029) // PPP LCP Magic number
 
-#define UIPR0				(_W5100_IO_BASE_ + (0x002A))
+#define UIPR0				(0x002A)
 #define UPORT0          (_W5100_IO_BASE  + (0x002E))
 
 
@@ -329,7 +327,7 @@
  *  - \ref Sn_MR_CLOSE	: Unused socket
  *  @note MACRAW mode should be only used in Socket 0.
  */
-#define Sn_MR(sn)			(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0000)) // socket Mode register
+#define Sn_MR(sn)			(WIZCHIP_SREG_BLOCK(sn) + (0x0000)) // socket Mode register
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -357,7 +355,7 @@
  * 		<tr>   <td>0x27</td> <td>PCJ</td> <td>In each phase, it transmits REJECT message.</td> </tr>
  * </table>
  */
-#define Sn_CR(sn)			(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0001)) // channel Sn_CR register
+#define Sn_CR(sn)			(WIZCHIP_SREG_BLOCK(sn) + (0x0001)) // channel Sn_CR register
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -378,7 +376,7 @@
  * - \ref Sn_IR_DISCON : <b>DISCON Interrupt</b>
  * - \ref Sn_IR_CON : <b>CON Interrupt</b>
  */
-#define Sn_IR(sn)			(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0002)) // channel interrupt register
+#define Sn_IR(sn)			(WIZCHIP_SREG_BLOCK(sn) + (0x0002)) // channel interrupt register
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -401,7 +399,7 @@
  * - \ref SOCK_TIME_WAIT	: Closing state
  * - \ref SOCK_LAST_ACK 	: Closing state
  */
-#define Sn_SR(sn)			(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0003)) // channel status register
+#define Sn_SR(sn)			(WIZCHIP_SREG_BLOCK(sn) + (0x0003)) // channel status register
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -409,7 +407,7 @@
  * @details \ref Sn_PORT configures the source port number of Socket n.
  * It is valid when Socket n is used in TCP/UDP mode. It should be set before OPEN command is ordered.
 */
-#define Sn_PORT(sn)		(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0004)) // source port register
+#define Sn_PORT(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x0004)) // source port register
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -417,7 +415,7 @@
  * @details \ref Sn_DHAR configures the destination hardware address of Socket n when using SEND_MAC command in UDP mode or
  * it indicates that it is acquired in ARP-process by CONNECT/SEND command.
  */
-#define Sn_DHAR(sn)     (_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0006)) // Peer MAC register address
+#define Sn_DHAR(sn)     (WIZCHIP_SREG_BLOCK(sn) + (0x0006)) // Peer MAC register address
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -427,7 +425,7 @@
  * In TCP server mode, it indicates an IP address of TCP client after successfully establishing connection.
  * In UDP mode, it configures an IP address of peer to be received the UDP packet by SEND or SEND_MAC command.
  */
-#define Sn_DIPR(sn)		(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x000C)) // Peer IP register address
+#define Sn_DIPR(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x000C)) // Peer IP register address
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -437,14 +435,14 @@
  * In TCP Servermode, it indicates the port number of TCP client after successfully establishing connection.
  * In UDP mode, it configures the port number of peer to be transmitted the UDP packet by SEND/SEND_MAC command.
  */
-#define Sn_DPORT(sn)    (_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0010)) // Peer port register address
+#define Sn_DPORT(sn)    (WIZCHIP_SREG_BLOCK(sn) + (0x0010)) // Peer port register address
 
 /**
  * @ingroup Socket_register_group_W5100
  * @brief Maximum Segment Size(Sn_MSSR0) register address(R/W)
  * @details \ref Sn_MSSR configures or indicates the MTU(Maximum Transfer Unit) of Socket n.
  */
-#define Sn_MSSR(sn)	   (_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0012)) // Maximum Segment Size(Sn_MSSR0) register address
+#define Sn_MSSR(sn)	   (WIZCHIP_SREG_BLOCK(sn) + (0x0012)) // Maximum Segment Size(Sn_MSSR0) register address
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -452,7 +450,7 @@
  * @details \ref Sn_PROTO that sets the protocol number field of the IP header at the IP layer. It is
  * valid only in IPRAW mode, and ignored in other modes.
  */
-#define Sn_PROTO(sn)	   (_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0014)) // Protocol of IP Header field register in IP raw mode
+#define Sn_PROTO(sn)	   (WIZCHIP_SREG_BLOCK(sn) + (0x0014)) // Protocol of IP Header field register in IP raw mode
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -460,7 +458,7 @@
  * @details \ref Sn_TOS configures the TOS(Type Of Service field in IP Header) of Socket n.
  * It is set before OPEN command.
  */
-#define Sn_TOS(sn)			(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + 0x0015) // IP Type of Service(TOS) Register 
+#define Sn_TOS(sn)			(WIZCHIP_SREG_BLOCK(sn) + 0x0015) // IP Type of Service(TOS) Register 
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -468,15 +466,15 @@
  * @details \ref Sn_TTL configures the TTL(Time To Live field in IP header) of Socket n.
  * It is set before OPEN command.
  */
-#define Sn_TTL(sn)		(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0016)) // IP Time to live(TTL) Register 
+#define Sn_TTL(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x0016)) // IP Time to live(TTL) Register 
 
-// Reserved					(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0017))
-// Reserved					(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0018))
-// Reserved					(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0019))
-// Reserved					(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x001A))
-// Reserved					(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x001B))
-// Reserved					(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x001C))
-// Reserved					(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x001D))
+// Reserved					(WIZCHIP_SREG_BLOCK(sn) + (0x0017))
+// Reserved					(WIZCHIP_SREG_BLOCK(sn) + (0x0018))
+// Reserved					(WIZCHIP_SREG_BLOCK(sn) + (0x0019))
+// Reserved					(WIZCHIP_SREG_BLOCK(sn) + (0x001A))
+// Reserved					(WIZCHIP_SREG_BLOCK(sn) + (0x001B))
+// Reserved					(WIZCHIP_SREG_BLOCK(sn) + (0x001C))
+// Reserved					(WIZCHIP_SREG_BLOCK(sn) + (0x001D))
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -487,7 +485,7 @@
  * transmit the data with SEND/SEND_MAC command after saving the data in Socket n TX buffer. But, if data is bigger than its checked size,
  * transmit the data after dividing into the checked size and saving in the Socket n TX buffer.
  */
-#define Sn_TX_FSR(sn)	(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0020)) // Transmit free memory size register
+#define Sn_TX_FSR(sn)	(WIZCHIP_SREG_BLOCK(sn) + (0x0020)) // Transmit free memory size register
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -499,7 +497,7 @@
  * If its increment value exceeds the maximum value 0xFFFF, (greater than 0x10000 and the carry bit occurs),
  * then the carry bit is ignored and will automatically update with the lower 16bits value.
  */
-#define Sn_TX_RD(sn)		(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0022)) // Transmit memory read pointer register address
+#define Sn_TX_RD(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x0022)) // Transmit memory read pointer register address
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -513,7 +511,7 @@
  * then the carry bit is ignored and will automatically update with the lower 16bits value.\n
  * 4. Transmit the saved data in Socket n TX Buffer by using SEND/SEND command
  */
-#define Sn_TX_WR(sn)		(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0024)) // Transmit memory write pointer register address
+#define Sn_TX_WR(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x0024)) // Transmit memory write pointer register address
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -522,7 +520,7 @@
  * \ref Sn_RX_RSR does not exceed the \ref Sn_RXMEM_SIZE and is calculated as the difference between
  * Socket n RX Write Pointer (\ref Sn_RX_WR)and Socket n RX Read Pointer (\ref Sn_RX_RD)
  */
-#define Sn_RX_RSR(sn)	(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0026)) // Received data size register
+#define Sn_RX_RSR(sn)	(WIZCHIP_SREG_BLOCK(sn) + (0x0026)) // Received data size register
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -535,7 +533,7 @@
  * update with the lower 16bits value ignored the carry bit.\n
  * 4. Order RECV command is for notifying the updated \ref Sn_RX_RD to W5100.
  */
-#define Sn_RX_RD(sn)		(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x0028)) // Read point of Receive memory
+#define Sn_RX_RD(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x0028)) // Read point of Receive memory
 
 /**
  * @ingroup Socket_register_group_W5100
@@ -544,7 +542,7 @@
  * If the increased value exceeds the maximum value 0xFFFF, (greater than 0x10000 and the carry bit occurs),
  * then the carry bit is ignored and will automatically update with the lower 16bits value.
  */
-#define Sn_RX_WR(sn)		(_W5100_IO_BASE_ + WIZCHIP_SREG_BLOCK(sn) + (0x002A)) // Write point of Receive memory
+#define Sn_RX_WR(sn)		(WIZCHIP_SREG_BLOCK(sn) + (0x002A)) // Write point of Receive memory
 
 
 //----------------------------- W5100 Register values  -----------------------------
