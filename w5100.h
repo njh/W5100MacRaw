@@ -898,9 +898,6 @@ connection.
 ////////////////////////
 // Basic I/O Function //
 ////////////////////////
-//
-//M20150601 :  uint16_t AddrSel --> uint32_t AddrSel
-//
 
 /**
 

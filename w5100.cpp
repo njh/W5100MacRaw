@@ -178,22 +178,19 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
     uint16_t i = 0;
 
     //WIZCHIP_CRITICAL_ENTER();
-    wizchip_cs_select();   //M20150601 : Moved here.
+    wizchip_cs_select();
 
     for(i = 0; i < len; i++)
     {
-        //M20160715 : Depricated "M20150601 : Remove _select() to top-side"
-        //            CS should be controlled every SPI frames
         wizchip_cs_select();
         wizchip_spi_writebyte(0xF0);
         wizchip_spi_writebyte((((uint16_t)(AddrSel+i)) & 0xFF00) >>  8);
         wizchip_spi_writebyte((((uint16_t)(AddrSel+i)) & 0x00FF) >>  0);
         wizchip_spi_writebyte(pBuf[i]);    // Data write (write 1byte data)
-        //M20160715 : Depricated "M20150601 : Remove _select() to top-side"
         wizchip_cs_deselect();
     }
 
-    wizchip_cs_deselect();  //M20150601 : Moved here.
+    wizchip_cs_deselect();
     //WIZCHIP_CRITICAL_EXIT();
 }
 
@@ -205,22 +202,19 @@ void     wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
     uint16_t i = 0;
     //WIZCHIP_CRITICAL_ENTER();
-    wizchip_cs_select();   //M20150601 : Moved here.
+    wizchip_cs_select();
 
     for(i = 0; i < len; i++)
     {
-        //M20160715 : Depricated "M20150601 : Remove _select() to top-side"
-        //            CS should be controlled every SPI frames
         wizchip_cs_select();
         wizchip_spi_writebyte(0x0F);
         wizchip_spi_writebyte((uint16_t)((AddrSel+i) & 0xFF00) >>  8);
         wizchip_spi_writebyte((uint16_t)((AddrSel+i) & 0x00FF) >>  0);
         pBuf[i] = wizchip_spi_readbyte();
-        //M20160715 : Depricated "M20150601 : Remove _select() to top-side"
         wizchip_cs_deselect();
     }
 
-    wizchip_cs_deselect();    //M20150601 : Moved Here.
+    wizchip_cs_deselect();
     //WIZCHIP_CRITICAL_EXIT();
 }
 
