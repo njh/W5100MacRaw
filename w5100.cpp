@@ -42,30 +42,8 @@
 #include <SPI.h>
 
 
-void wizchip_cs_select(void)
-{
-    digitalWrite(SS, LOW);
-}
 
-void wizchip_cs_deselect(void)
-{
-    digitalWrite(SS, HIGH);
-}
-
-
-
-void wizchip_sw_reset(void)
-{
-    uint8_t mac[6];
-    getSHAR(mac);
-
-    setMR(MR_RST);
-    getMR(); // for delay
-
-    setSHAR(mac);
-}
-
-int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
+int8_t Wiznet5100::wizchip_init(uint8_t* txsize, uint8_t* rxsize)
 {
     int8_t i;
     int8_t tmp = 0;
@@ -96,7 +74,20 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
     return 0;
 }
 
-void     wizchip_write(uint16_t AddrSel, uint8_t wb )
+
+void Wiznet5100::wizchip_sw_reset()
+{
+    uint8_t mac[6];
+    getSHAR(mac);
+
+    setMR(MR_RST);
+    getMR(); // for delay
+
+    setSHAR(mac);
+}
+
+
+void Wiznet5100::wizchip_write(uint16_t AddrSel, uint8_t wb )
 {
     //WIZCHIP_CRITICAL_ENTER();
     wizchip_cs_select();
@@ -109,6 +100,9 @@ void     wizchip_write(uint16_t AddrSel, uint8_t wb )
     wizchip_cs_deselect();
     //WIZCHIP_CRITICAL_EXIT();
 }
+
+
+uint8_t Wiznet5100::wizchip_read(uint16_t AddrSel)
 {
     uint8_t ret;
 
@@ -126,7 +120,7 @@ void     wizchip_write(uint16_t AddrSel, uint8_t wb )
 }
 
 
-void wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len)
+void Wiznet5100::wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len)
 {
     uint16_t i = 0;
 
@@ -148,7 +142,7 @@ void wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len)
 }
 
 
-void     wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
+void Wiznet5100::wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
     uint16_t i = 0;
     //WIZCHIP_CRITICAL_ENTER();
@@ -172,7 +166,7 @@ void     wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
 // Socket N regsiter IO function //
 ///////////////////////////////////
 
-uint16_t getSn_TX_FSR(uint8_t sn)
+uint16_t Wiznet5100::getSn_TX_FSR(uint8_t sn)
 {
     uint16_t val=0,val1=0;
     do
@@ -189,7 +183,7 @@ uint16_t getSn_TX_FSR(uint8_t sn)
 }
 
 
-uint16_t getSn_RX_RSR(uint8_t sn)
+uint16_t Wiznet5100::getSn_RX_RSR(uint8_t sn)
 {
     uint16_t val=0,val1=0;
     do
@@ -208,7 +202,7 @@ uint16_t getSn_RX_RSR(uint8_t sn)
 /////////////////////////////////////
 // Sn_TXBUF & Sn_RXBUF IO function //
 /////////////////////////////////////
-uint16_t getSn_RxBASE(uint8_t sn)
+uint16_t Wiznet5100::getSn_RxBASE(uint8_t sn)
 {
     int8_t  i;
     uint16_t rxbase = _WIZCHIP_IO_RXBUF_;
@@ -218,7 +212,7 @@ uint16_t getSn_RxBASE(uint8_t sn)
     return rxbase;
 }
 
-uint16_t getSn_TxBASE(uint8_t sn)
+uint16_t Wiznet5100::getSn_TxBASE(uint8_t sn)
 {
     int8_t  i;
     uint16_t txbase = _WIZCHIP_IO_TXBUF_;
@@ -238,7 +232,7 @@ the data in transmite buffer. Here also take care of the condition while it exce
 the Tx memory uper-bound of socket.
 
 */
-void wiz_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len)
+void Wiznet5100::wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr;
     uint16_t size;
@@ -280,7 +274,7 @@ It calculate the actual physical address where one has to read
 the data from Receive buffer. Here also take care of the condition while it exceed
 the Rx memory uper-bound of socket.
 */
-void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
+void Wiznet5100::wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr;
     uint16_t size;
@@ -312,24 +306,15 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
     setSn_RX_RD(sn, ptr);
 }
 
-void wiz_recv_ignore(uint8_t sn, uint16_t len)
+
+Wiznet5100::Wiznet5100(int8_t cs)
 {
-    uint16_t ptr;
-
-    ptr = getSn_RX_RD(sn);
-
-    ptr += len;
-    setSn_RX_RD(sn,ptr);
+    _cs = cs;
 }
 
-
-
-const int MacRawSockNum = 0;
-
-
-int8_t wiz_begin(const uint8_t mac_address[6])
+boolean Wiznet5100::begin(const uint8_t *mac_address)
 {
-    pinMode(SS, OUTPUT);
+    pinMode(_cs, OUTPUT);
     wizchip_cs_deselect();
 
     SPI.begin();
@@ -349,15 +334,15 @@ int8_t wiz_begin(const uint8_t mac_address[6])
 
     if (getSn_SR(MacRawSockNum) != SOCK_MACRAW) {
         Serial.println("Failed to put socket 0 into MACRaw mode");
-        return -1;
+        return false;
     }
 
     // Success
-    return 0;
+    return true;
 }
 
 
-int wiz_read_frame(uint8_t *buffer, uint16_t bufsize)
+uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
 {
     uint16_t len = getSn_RX_RSR(MacRawSockNum);
     if ( len > 0 )
@@ -365,7 +350,7 @@ int wiz_read_frame(uint8_t *buffer, uint16_t bufsize)
         uint8_t head[2];
         uint16_t data_len=0;
 
-        wiz_recv_data(MacRawSockNum, head, 2);
+        wizchip_recv_data(MacRawSockNum, head, 2);
         setSn_CR(MacRawSockNum, Sn_CR_RECV);
         while(getSn_CR(MacRawSockNum));
 
@@ -379,7 +364,7 @@ int wiz_read_frame(uint8_t *buffer, uint16_t bufsize)
             return 0;
         }
 
-        wiz_recv_data( MacRawSockNum, buffer, data_len );
+        wizchip_recv_data( MacRawSockNum, buffer, data_len );
         setSn_CR(MacRawSockNum, Sn_CR_RECV);
         while(getSn_CR(MacRawSockNum));
 
@@ -389,7 +374,7 @@ int wiz_read_frame(uint8_t *buffer, uint16_t bufsize)
     return 0;
 }
 
-int16_t wiz_send_frame(const uint8_t *buf, uint16_t len)
+uint16_t Wiznet5100::sendFrame(const uint8_t *buf, uint16_t len)
 {
     uint16_t freesize = 0;
 
@@ -407,12 +392,13 @@ int16_t wiz_send_frame(const uint8_t *buf, uint16_t len)
         }
         if(len <= freesize) break;
     };
-    wiz_send_data(MacRawSockNum, buf, len);
+    wizchip_send_data(MacRawSockNum, buf, len);
 
 
     setSn_CR(MacRawSockNum, Sn_CR_SEND);
     /* wait to process the command... */
     while(getSn_CR(MacRawSockNum));
+
     while(1)
     {
         uint8_t tmp = getSn_IR(MacRawSockNum);

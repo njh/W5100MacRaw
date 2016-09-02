@@ -40,10 +40,10 @@
 
 #ifndef	_W5100_H_
 #define	_W5100_H_
+
 #include <stdint.h>
+#include <Arduino.h>
 
-
-#define W5100_SPI_SS 10
 
 
 #define _WIZCHIP_SN_BASE_  (0x0400)
@@ -895,60 +895,6 @@ connection.
 
 
 
-////////////////////////
-// Basic I/O Function //
-////////////////////////
-
-/**
-
- * @brief Reset WIZCHIP by softly.
- */
-void   wizchip_sw_reset(void);
-
-/**
-
- * @brief Initializes WIZCHIP with socket buffer size
- * @param txsize Socket tx buffer sizes. If null, initialized the default size 2KB.
- * @param rxsize Socket rx buffer sizes. If null, initialized the default size 2KB.
- * @return 0 : succcess \n
- *        -1 : fail. Invalid buffer size
- */
-int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
-
-/**
-
- * @brief It reads 1 byte value from a register.
- * @param AddrSel Register address
- * @return The value of register
- */
-uint8_t  wizchip_read(uint16_t AddrSel);
-
-/**
-
- * @brief It writes 1 byte value to a register.
- * @param AddrSel Register address
- * @param wb Write data
- * @return void
- */
-void     wizchip_write(uint16_t AddrSel, uint8_t wb );
-
-/**
-
- * @brief It reads sequence data from registers.
- * @param AddrSel Register address
- * @param pBuf Pointer buffer to read data
- * @param len Data length
- */
-void     wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len);
-
-/**
-
- * @brief It writes sequence data to registers.
- * @param AddrSel Register address
- * @param pBuf Pointer buffer to write data
- * @param len Data length
- */
-void     wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len);
 
 
 /////////////////////////////////
@@ -1489,14 +1435,6 @@ void     wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len);
 
 /**
 
- * @brief Get @ref Sn_TX_FSR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
- * @return uint16_t. Value of @ref Sn_TX_FSR.
- */
-uint16_t getSn_TX_FSR(uint8_t sn);
-
-/**
-
  * @brief Get @ref Sn_TX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of @ref Sn_TX_RD.
@@ -1527,15 +1465,6 @@ uint16_t getSn_TX_FSR(uint8_t sn);
 		(((uint16_t)wizchip_read(Sn_TX_WR(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_WR(sn),1)))
 
 /**
-
- * @brief Get @ref Sn_RX_RSR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
- * @return uint16_t. Value of @ref Sn_RX_RSR.
- */
-uint16_t getSn_RX_RSR(uint8_t sn);
-
-/**
-
  * @brief Set @ref Sn_RX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @param (uint16_t)rxrd Value to set @ref Sn_RX_RD
@@ -1637,70 +1566,177 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 #define getSn_TxMASK(sn) \
 		(getSn_TxMAX(sn) - 1)
 
-/**
 
- * @brief Get the base address of socket sn RX buffer.
- * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
- * @return uint16_t. Value of Socket n RX buffer base address.
- */
-uint16_t getSn_RxBASE(uint8_t sn);
 
-/**
+class Wiznet5100 {
 
- * @brief Get the base address of socket sn TX buffer.
- * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
- * @return uint16_t. Value of Socket n TX buffer base address.
- */
-uint16_t getSn_TxBASE(uint8_t sn);
+public:
+    /**
+     * Constructor that uses the default hardware SPI pins
+     * @param cs the Arduino Chip Select / Slave Select pin (default 10)
+     */
+    Wiznet5100(int8_t cs=SS);
 
-/////////////////////////////////////
-// Sn_TXBUF & Sn_RXBUF IO function //
-/////////////////////////////////////
-/**
 
- * @brief It copies data to internal TX memory
- *
- * @details This function reads the Tx write pointer register and after that,
- * it copies the <i>wizdata(pointer buffer)</i> of the length of <i>len(variable)</i> bytes to internal TX memory
- * and updates the Tx write pointer register.
- * This function is being called by send() and sendto() function also.
- *
- * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
- * @param wizdata Pointer buffer to write data
- * @param len Data length
- * @sa wiz_recv_data()
- */
-void wiz_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len);
+    /**
+     * Initialise the Ethernet controller
+     * Must be called before sending or receiving Ethernet frames
+     * @param address the local MAC address for the Ethernet interface
+     */
+    boolean begin(const uint8_t *address);
 
-/**
+    /**
+     * Send an Ethernet frame
+     * @param data a pointer to the data to send
+     * @param datalen the length of the data in the packet
+     * @return the number of bytes transmitted
+     */
+    uint16_t sendFrame(const uint8_t *data, uint16_t datalen);
 
- * @brief It copies data to your buffer from internal RX memory
- *
- * @details This function read the Rx read pointer register and after that,
- * it copies the received data from internal RX memory
- * to <i>wizdata(pointer variable)</i> of the length of <i>len(variable)</i> bytes.
- * This function is being called by recv() also.
- *
- * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
- * @param wizdata Pointer buffer to read data
- * @param len Data length
- * @sa wiz_send_data()
- */
-void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
+    /**
+     * Read an Ethernet frame
+     * @param buffer a pointer to a buffer to write the packet to
+     * @param bufsize the available space in the buffer
+     * @return the length of the received packet
+     *         or 0 if no packet was received
+     */
+    uint16_t readFrame(uint8_t *buffer, uint16_t bufsize);
 
-/**
+private:
+    const int MacRawSockNum = 0;
 
- * @brief It discard the received data in RX memory.
- * @details It discards the data of the length of <i>len(variable)</i> bytes in internal RX memory.
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
- * @param len Data length
- */
-void wiz_recv_ignore(uint8_t sn, uint16_t len);
+    /**
+     * @brief Default function to select chip.
+     * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+     * null function is called.
+     */
+    inline void wizchip_cs_select()
+    {
+        digitalWrite(_cs, LOW);
+    }
 
-int8_t wiz_begin(const uint8_t mac_address[6]);
-int wiz_read_frame(uint8_t *buffer, uint16_t bufsize);
-int16_t wiz_send_frame(const uint8_t *buf, uint16_t len);
+    /**
+     * @brief Default function to deselect chip.
+     * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+     * null function is called.
+     */
+    inline void wizchip_cs_deselect()
+    {
+        digitalWrite(_cs, HIGH);
+    }
 
+    /**
+     * @brief Reset WIZCHIP by softly.
+     */
+    void wizchip_sw_reset(void);
+
+    /**
+
+     * @brief Initializes WIZCHIP with socket buffer size
+     * @param txsize Socket tx buffer sizes. If null, initialized the default size 2KB.
+     * @param rxsize Socket rx buffer sizes. If null, initialized the default size 2KB.
+     * @return 0 : succcess \n
+     *        -1 : fail. Invalid buffer size
+     */
+    int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
+
+    /**
+
+     * @brief It reads 1 byte value from a register.
+     * @param AddrSel Register address
+     * @return The value of register
+     */
+    uint8_t wizchip_read(uint16_t AddrSel);
+
+    /**
+
+     * @brief It writes 1 byte value to a register.
+     * @param AddrSel Register address
+     * @param wb Write data
+     * @return void
+     */
+    void wizchip_write(uint16_t AddrSel, uint8_t wb );
+
+    /**
+
+     * @brief It reads sequence data from registers.
+     * @param AddrSel Register address
+     * @param pBuf Pointer buffer to read data
+     * @param len Data length
+     */
+    void wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len);
+
+    /**
+
+     * @brief It writes sequence data to registers.
+     * @param AddrSel Register address
+     * @param pBuf Pointer buffer to write data
+     * @param len Data length
+     */
+    void wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len);
+
+    /**
+     * @brief It copies data to internal TX memory
+     *
+     * @details This function reads the Tx write pointer register and after that,
+     * it copies the <i>wizdata(pointer buffer)</i> of the length of <i>len(variable)</i> bytes to internal TX memory
+     * and updates the Tx write pointer register.
+     * This function is being called by send() and sendto() function also.
+     *
+     * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
+     * @param wizdata Pointer buffer to write data
+     * @param len Data length
+     * @sa recv_data()
+     */
+    void wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len);
+
+    /**
+     * @brief It copies data to your buffer from internal RX memory
+     *
+     * @details This function read the Rx read pointer register and after that,
+     * it copies the received data from internal RX memory
+     * to <i>wizdata(pointer variable)</i> of the length of <i>len(variable)</i> bytes.
+     * This function is being called by recv() also.
+     *
+     * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
+     * @param wizdata Pointer buffer to read data
+     * @param len Data length
+     * @sa wiz_send_data()
+     */
+    void wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
+
+    /**
+     * @brief Get the base address of socket sn RX buffer.
+     * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
+     * @return uint16_t. Value of Socket n RX buffer base address.
+     */
+    uint16_t getSn_RxBASE(uint8_t sn);
+
+    /**
+     * @brief Get the base address of socket sn TX buffer.
+     * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
+     * @return uint16_t. Value of Socket n TX buffer base address.
+     */
+    uint16_t getSn_TxBASE(uint8_t sn);
+
+    /**
+     * @brief Get @ref Sn_TX_FSR register
+     * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
+     * @return uint16_t. Value of @ref Sn_TX_FSR.
+     */
+    uint16_t getSn_TX_FSR(uint8_t sn);
+
+    /**
+     * @brief Get @ref Sn_RX_RSR register
+     * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
+     * @return uint16_t. Value of @ref Sn_RX_RSR.
+     */
+    uint16_t getSn_RX_RSR(uint8_t sn);
+
+
+    int8_t _cs;
+
+};
 
 #endif //_W5100_H_
 

@@ -1,7 +1,4 @@
-#include <SPI.h>
 #include "w5100.h"
-
-const int sockNum = 0;
 
 
 void printPaddedHex(uint8_t byte)
@@ -35,12 +32,14 @@ const byte mac_address[] = {
     0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 
+Wiznet5100 w5100;
+
 void setup() {
     // Setup serial port for debugging
     Serial.begin(38400);
     Serial.println("[W5100MacRaw]");
 
-    wiz_begin(mac_address);
+    w5100.begin(mac_address);
 }
 
 
@@ -48,7 +47,7 @@ uint8_t buffer[800];
 
 void loop() {
 
-    uint16_t len = wiz_read_frame(buffer, sizeof(buffer));
+    uint16_t len = w5100.readFrame(buffer, sizeof(buffer));
     if ( len > 0 ) {
         Serial.print("len=");
         Serial.println(len, DEC);
@@ -79,7 +78,7 @@ void loop() {
         buffer[13] = 0xB5;
         memcpy(&buffer[14], "Test", 4);
 
-        wiz_send_frame(buffer, 6 + 6 + 2 + 4);
+        w5100.sendFrame(buffer, 6 + 6 + 2 + 4);
         nextMessage = millis() + 5000;
     }
 }
