@@ -1,5 +1,4 @@
 //*****************************************************************************
-//
 //! \file w5100.c
 //! \brief W5100 HAL Interface.
 //! \version 1.0.0
@@ -63,25 +62,6 @@ void wizchip_cs_deselect(void)
     digitalWrite(SS, HIGH);
 }
 
-/**
- * @brief Default function to read in SPI interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-uint8_t wizchip_spi_readbyte(void)
-{
-    return SPI.transfer(0);
-}
-
-/**
- * @brief Default function to write in SPI interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-void 	wizchip_spi_writebyte(uint8_t wb)
-{
-    SPI.transfer(wb);
-}
 
 
 void wizchip_sw_reset(void)
@@ -141,10 +121,10 @@ void     wizchip_write(uint32_t AddrSel, uint8_t wb )
     //WIZCHIP_CRITICAL_ENTER();
     wizchip_cs_select();
 
-    wizchip_spi_writebyte(0xF0);
-    wizchip_spi_writebyte((AddrSel & 0xFF00) >>  8);
-    wizchip_spi_writebyte((AddrSel & 0x00FF) >>  0);
-    wizchip_spi_writebyte(wb);    // Data write (write 1byte data)
+    SPI.transfer(0xF0);
+    SPI.transfer((AddrSel & 0xFF00) >>  8);
+    SPI.transfer((AddrSel & 0x00FF) >>  0);
+    SPI.transfer(wb);    // Data write (write 1byte data)
 
     wizchip_cs_deselect();
     //WIZCHIP_CRITICAL_EXIT();
@@ -159,10 +139,10 @@ uint8_t  wizchip_read(uint32_t AddrSel)
     //WIZCHIP_CRITICAL_ENTER();
     wizchip_cs_select();
 
-    wizchip_spi_writebyte(0x0F);
-    wizchip_spi_writebyte((AddrSel & 0xFF00) >>  8);
-    wizchip_spi_writebyte((AddrSel & 0x00FF) >>  0);
-    ret = wizchip_spi_readbyte();
+    SPI.transfer(0x0F);
+    SPI.transfer((AddrSel & 0xFF00) >>  8);
+    SPI.transfer((AddrSel & 0x00FF) >>  0);
+    ret = SPI.transfer(0);
 
     wizchip_cs_deselect();
     //WIZCHIP_CRITICAL_EXIT();
@@ -183,10 +163,10 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
     for(i = 0; i < len; i++)
     {
         wizchip_cs_select();
-        wizchip_spi_writebyte(0xF0);
-        wizchip_spi_writebyte((((uint16_t)(AddrSel+i)) & 0xFF00) >>  8);
-        wizchip_spi_writebyte((((uint16_t)(AddrSel+i)) & 0x00FF) >>  0);
-        wizchip_spi_writebyte(pBuf[i]);    // Data write (write 1byte data)
+        SPI.transfer(0xF0);
+        SPI.transfer((((uint16_t)(AddrSel+i)) & 0xFF00) >>  8);
+        SPI.transfer((((uint16_t)(AddrSel+i)) & 0x00FF) >>  0);
+        SPI.transfer(pBuf[i]);    // Data write (write 1byte data)
         wizchip_cs_deselect();
     }
 
@@ -207,10 +187,10 @@ void     wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
     for(i = 0; i < len; i++)
     {
         wizchip_cs_select();
-        wizchip_spi_writebyte(0x0F);
-        wizchip_spi_writebyte((uint16_t)((AddrSel+i) & 0xFF00) >>  8);
-        wizchip_spi_writebyte((uint16_t)((AddrSel+i) & 0x00FF) >>  0);
-        pBuf[i] = wizchip_spi_readbyte();
+        SPI.transfer(0x0F);
+        SPI.transfer((uint16_t)((AddrSel+i) & 0xFF00) >>  8);
+        SPI.transfer((uint16_t)((AddrSel+i) & 0x00FF) >>  0);
+        pBuf[i] = SPI.transfer(0);
         wizchip_cs_deselect();
     }
 
