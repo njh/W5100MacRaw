@@ -347,19 +347,50 @@ void wiz_recv_ignore(uint8_t sn, uint16_t len)
 
 
 
-const int sockNum = 0;
+const int MacRawSockNum = 0;
+
+
+int8_t wiz_begin(const uint8_t mac_address[6])
+{
+    pinMode(SS, OUTPUT);
+    wizchip_cs_deselect();
+
+    SPI.begin();
+    SPI.setClockDivider(SPI_CLOCK_DIV4); // 4 MHz?
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setDataMode(SPI_MODE0);
+
+    wizchip_init(NULL, NULL);
+
+    setSHAR(mac_address);
+
+    setSn_MR(MacRawSockNum, Sn_MR_MACRAW);
+    setSn_CR(MacRawSockNum, Sn_CR_OPEN);
+
+    /* wait to process the command... */
+    while( getSn_CR(MacRawSockNum) ) ;
+
+    if (getSn_SR(MacRawSockNum) != SOCK_MACRAW) {
+        Serial.println("Failed to put socket 0 into MACRaw mode");
+        return -1;
+    }
+
+    // Success
+    return 0;
+}
+
 
 int wiz_read_frame(uint8_t *buffer, uint16_t bufsize)
 {
-    uint16_t len = getSn_RX_RSR(sockNum);
+    uint16_t len = getSn_RX_RSR(MacRawSockNum);
     if ( len > 0 )
     {
         uint8_t head[2];
         uint16_t data_len=0;
 
-        wiz_recv_data(sockNum, head, 2);
-        setSn_CR(sockNum, Sn_CR_RECV);
-        while(getSn_CR(sockNum));
+        wiz_recv_data(MacRawSockNum, head, 2);
+        setSn_CR(MacRawSockNum, Sn_CR_RECV);
+        while(getSn_CR(MacRawSockNum));
 
         data_len = head[0];
         data_len = (data_len<<8) + head[1];
@@ -371,9 +402,9 @@ int wiz_read_frame(uint8_t *buffer, uint16_t bufsize)
             return 0;
         }
 
-        wiz_recv_data( sockNum, buffer, data_len );
-        setSn_CR(sockNum, Sn_CR_RECV);
-        while(getSn_CR(sockNum));
+        wiz_recv_data( MacRawSockNum, buffer, data_len );
+        setSn_CR(MacRawSockNum, Sn_CR_RECV);
+        while(getSn_CR(MacRawSockNum));
 
         return data_len;
     }
@@ -386,37 +417,37 @@ int16_t wiz_send_frame(const uint8_t *buf, uint16_t len)
     uint16_t freesize = 0;
 
     // check size not to exceed MAX size.
-    freesize = getSn_TxMAX(sockNum);
+    freesize = getSn_TxMAX(MacRawSockNum);
     if (len > freesize) len = freesize;
-    
+
     // Wait for space in the transmit buffer
     while(1)
     {
-        freesize = getSn_TX_FSR(sockNum);
-        if(getSn_SR(sockNum) == SOCK_CLOSED) {
+        freesize = getSn_TX_FSR(MacRawSockNum);
+        if(getSn_SR(MacRawSockNum) == SOCK_CLOSED) {
             Serial.println("Socket closed");
             return -1;
         }
         if(len <= freesize) break;
     };
-    wiz_send_data(sockNum, buf, len);
+    wiz_send_data(MacRawSockNum, buf, len);
 
 
-    setSn_CR(sockNum, Sn_CR_SEND);
+    setSn_CR(MacRawSockNum, Sn_CR_SEND);
     /* wait to process the command... */
-    while(getSn_CR(sockNum));
+    while(getSn_CR(MacRawSockNum));
     while(1)
     {
-        uint8_t tmp = getSn_IR(sockNum);
+        uint8_t tmp = getSn_IR(MacRawSockNum);
         if(tmp & Sn_IR_SENDOK)
         {
-            setSn_IR(sockNum, Sn_IR_SENDOK);
+            setSn_IR(MacRawSockNum, Sn_IR_SENDOK);
             Serial.println("Sn_IR_SENDOK");
             break;
         }
         else if(tmp & Sn_IR_TIMEOUT)
         {
-            setSn_IR(sockNum, Sn_IR_TIMEOUT);
+            setSn_IR(MacRawSockNum, Sn_IR_TIMEOUT);
             Serial.println("Timeout");
             return -1;
         }

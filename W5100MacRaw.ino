@@ -31,7 +31,7 @@ void printMACAddress(const uint8_t address[6])
 
 
 
-byte mac_address[] = {
+const byte mac_address[] = {
     0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 
@@ -40,36 +40,7 @@ void setup() {
     Serial.begin(38400);
     Serial.println("[W5100MacRaw]");
 
-    pinMode(SS, OUTPUT);
-    digitalWrite(SS, HIGH);
-
-    SPI.begin();
-    SPI.setClockDivider(SPI_CLOCK_DIV4); // 4 MHz?
-    SPI.setBitOrder(MSBFIRST);
-    SPI.setDataMode(SPI_MODE0);
-
-    // Initialise the basic info
-    wizchip_init(NULL, NULL);
-
-    setSHAR(mac_address);
-
-    setSn_MR(sockNum, Sn_MR_MACRAW);
-    setSn_CR(sockNum, Sn_CR_OPEN);
-
-    /* wait to process the command... */
-    while( getSn_CR(sockNum) ) ;
-
-    uint8_t socketCommand = getSn_CR(sockNum);
-    Serial.print("socketCommand=0x");
-    Serial.println(socketCommand, HEX);
-
-    uint8_t socketStatus = getSn_SR(sockNum);
-    Serial.print("socketStatus=0x");
-    Serial.println(socketStatus, HEX);
-
-    uint8_t retryCount = getRCR();
-    Serial.print("retryCount=");
-    Serial.println(retryCount, DEC);
+    wiz_begin(mac_address);
 }
 
 
