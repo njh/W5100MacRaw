@@ -109,7 +109,7 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
 /**
 @brief  This function writes the data into W5200 registers.
 */
-void     wizchip_write(uint32_t AddrSel, uint8_t wb )
+void     wizchip_write(uint16_t AddrSel, uint8_t wb )
 {
     //WIZCHIP_CRITICAL_ENTER();
     wizchip_cs_select();
@@ -125,7 +125,7 @@ void     wizchip_write(uint32_t AddrSel, uint8_t wb )
 /**
 @brief  This function reads the value from W5200 registers.
 */
-uint8_t  wizchip_read(uint32_t AddrSel)
+uint8_t  wizchip_read(uint16_t AddrSel)
 {
     uint8_t ret;
 
@@ -146,7 +146,7 @@ uint8_t  wizchip_read(uint32_t AddrSel)
 /**
 @brief  This function writes into W5200 memory(Buffer)
 */
-void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
+void     wizchip_write_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
     uint16_t i = 0;
 
@@ -157,8 +157,8 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
     {
         wizchip_cs_select();
         SPI.transfer(0xF0);
-        SPI.transfer((((uint16_t)(AddrSel+i)) & 0xFF00) >>  8);
-        SPI.transfer((((uint16_t)(AddrSel+i)) & 0x00FF) >>  0);
+        SPI.transfer(((AddrSel+i) & 0xFF00) >>  8);
+        SPI.transfer(((AddrSel+i) & 0x00FF) >>  0);
         SPI.transfer(pBuf[i]);    // Data write (write 1byte data)
         wizchip_cs_deselect();
     }
@@ -171,7 +171,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 @brief  This function reads into W5200 memory(Buffer)
 */
 
-void     wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
+void     wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
     uint16_t i = 0;
     //WIZCHIP_CRITICAL_ENTER();
@@ -181,8 +181,8 @@ void     wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
     {
         wizchip_cs_select();
         SPI.transfer(0x0F);
-        SPI.transfer((uint16_t)((AddrSel+i) & 0xFF00) >>  8);
-        SPI.transfer((uint16_t)((AddrSel+i) & 0x00FF) >>  0);
+        SPI.transfer(((AddrSel+i) & 0xFF00) >>  8);
+        SPI.transfer(((AddrSel+i) & 0x00FF) >>  0);
         pBuf[i] = SPI.transfer(0);
         wizchip_cs_deselect();
     }
@@ -231,20 +231,20 @@ uint16_t getSn_RX_RSR(uint8_t sn)
 /////////////////////////////////////
 // Sn_TXBUF & Sn_RXBUF IO function //
 /////////////////////////////////////
-uint32_t getSn_RxBASE(uint8_t sn)
+uint16_t getSn_RxBASE(uint8_t sn)
 {
     int8_t  i;
-    uint32_t rxbase = _WIZCHIP_IO_RXBUF_;
+    uint16_t rxbase = _WIZCHIP_IO_RXBUF_;
     for(i = 0; i < sn; i++)
         rxbase += getSn_RxMAX(i);
 
     return rxbase;
 }
 
-uint32_t getSn_TxBASE(uint8_t sn)
+uint16_t getSn_TxBASE(uint8_t sn)
 {
     int8_t  i;
-    uint32_t txbase = _WIZCHIP_IO_TXBUF_;
+    uint16_t txbase = _WIZCHIP_IO_TXBUF_;
     for(i = 0; i < sn; i++)
         txbase += getSn_TxMAX(i);
     return txbase;
@@ -312,7 +312,7 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
 
     ptr = getSn_RX_RD(sn);
 
-    src_mask = (uint32_t)ptr & getSn_RxMASK(sn);
+    src_mask = ptr & getSn_RxMASK(sn);
     src_ptr = (getSn_RxBASE(sn) + src_mask);
 
 

@@ -921,7 +921,7 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
  * @param AddrSel Register address
  * @return The value of register
  */
-uint8_t  wizchip_read(uint32_t AddrSel);
+uint8_t  wizchip_read(uint16_t AddrSel);
 
 /**
 
@@ -930,7 +930,7 @@ uint8_t  wizchip_read(uint32_t AddrSel);
  * @param wb Write data
  * @return void
  */
-void     wizchip_write(uint32_t AddrSel, uint8_t wb );
+void     wizchip_write(uint16_t AddrSel, uint8_t wb );
 
 /**
 
@@ -939,7 +939,7 @@ void     wizchip_write(uint32_t AddrSel, uint8_t wb );
  * @param pBuf Pointer buffer to read data
  * @param len Data length
  */
-void     wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
+void     wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len);
 
 /**
 
@@ -948,7 +948,7 @@ void     wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @param pBuf Pointer buffer to write data
  * @param len Data length
  */
-void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
+void     wizchip_write_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len);
 
 
 /////////////////////////////////
@@ -1643,7 +1643,7 @@ uint16_t getSn_RX_RSR(uint8_t sn);
  * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of Socket n RX buffer base address.
  */
-uint32_t getSn_RxBASE(uint8_t sn);
+uint16_t getSn_RxBASE(uint8_t sn);
 
 /**
 
@@ -1651,7 +1651,7 @@ uint32_t getSn_RxBASE(uint8_t sn);
  * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
  * @return uint16_t. Value of Socket n TX buffer base address.
  */
-uint32_t getSn_TxBASE(uint8_t sn);
+uint16_t getSn_TxBASE(uint8_t sn);
 
 /////////////////////////////////////
 // Sn_TXBUF & Sn_RXBUF IO function //
