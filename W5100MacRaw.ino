@@ -61,15 +61,59 @@ int read_frame(uint8_t *buffer, uint16_t bufsize)
     return 0;
 }
 
+int16_t send_frame(uint8_t *buf, uint16_t len)
+{
+    uint16_t freesize = 0;
+
+    // check size not to exceed MAX size.
+    freesize = getSn_TxMAX(sockNum);
+    if (len > freesize) len = freesize;
+    
+    // Wait for space in the transmit buffer
+    while(1)
+    {
+        freesize = getSn_TX_FSR(sockNum);
+        if(getSn_SR(sockNum) == SOCK_CLOSED) {
+            Serial.println("Socket closed");
+            return -1;
+        }
+        if(len <= freesize) break;
+    };
+    wiz_send_data(sockNum, buf, len);
+
+
+    setSn_CR(sockNum, Sn_CR_SEND);
+    /* wait to process the command... */
+    while(getSn_CR(sockNum));
+    while(1)
+    {
+        uint8_t tmp = getSn_IR(sockNum);
+        if(tmp & Sn_IR_SENDOK)
+        {
+            setSn_IR(sockNum, Sn_IR_SENDOK);
+            Serial.println("Sn_IR_SENDOK");
+            break;
+        }
+        else if(tmp & Sn_IR_TIMEOUT)
+        {
+            setSn_IR(sockNum, Sn_IR_TIMEOUT);
+            Serial.println("Timeout");
+            return -1;
+        }
+    }
+
+    return len;
+}
+
+
+byte mac_address[] = {
+    0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
+};
 
 void setup() {
     // Setup serial port for debugging
     Serial.begin(38400);
     Serial.println("[W5100MacRaw]");
-
-    byte mac_address[] = {
-        0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
-    };
 
     pinMode(SS, OUTPUT);
     digitalWrite(SS, HIGH);
@@ -127,5 +171,19 @@ void loop() {
         Serial.println();
 
         Serial.println();
+    }
+
+
+    static unsigned long nextMessage = millis();
+    if ((long)(millis() - nextMessage) >= 0) {
+        Serial.println("Sending test message.");
+        memcpy(&buffer[0], "\xff\xff\xff\xff\xff\xff", 6);
+        memcpy(&buffer[6], mac_address, 6);
+        buffer[12] = 0x88;    // Local Experimental Ethertype
+        buffer[13] = 0xB5;
+        memcpy(&buffer[14], "Test", 4);
+
+        send_frame(buffer, 6 + 6 + 2 + 4);
+        nextMessage = millis() + 5000;
     }
 }
