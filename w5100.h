@@ -948,7 +948,7 @@ void     wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @param pBuf Pointer buffer to write data
  * @param len Data length
  */
-void     wizchip_write_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len);
+void     wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len);
 
 
 /////////////////////////////////
@@ -1670,7 +1670,7 @@ uint16_t getSn_TxBASE(uint8_t sn);
  * @param len Data length
  * @sa wiz_recv_data()
  */
-void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
+void wiz_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len);
 
 /**
 
@@ -1699,7 +1699,7 @@ void wiz_recv_ignore(uint8_t sn, uint16_t len);
 
 
 int wiz_read_frame(uint8_t *buffer, uint16_t bufsize);
-int16_t wiz_send_frame(uint8_t *buf, uint16_t len);
+int16_t wiz_send_frame(const uint8_t *buf, uint16_t len);
 
 
 #endif //_W5100_H_

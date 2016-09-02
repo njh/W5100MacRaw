@@ -125,7 +125,7 @@ void     wizchip_write(uint16_t AddrSel, uint8_t wb )
 /**
 @brief  This function reads the value from W5200 registers.
 */
-uint8_t  wizchip_read(uint16_t AddrSel)
+uint8_t wizchip_read(uint16_t AddrSel)
 {
     uint8_t ret;
 
@@ -146,7 +146,7 @@ uint8_t  wizchip_read(uint16_t AddrSel)
 /**
 @brief  This function writes into W5200 memory(Buffer)
 */
-void     wizchip_write_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
+void wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len)
 {
     uint16_t i = 0;
 
@@ -261,7 +261,7 @@ the data in transmite buffer. Here also take care of the condition while it exce
 the Tx memory uper-bound of socket.
 
 */
-void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
+void wiz_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr;
     uint16_t size;
@@ -381,7 +381,7 @@ int wiz_read_frame(uint8_t *buffer, uint16_t bufsize)
     return 0;
 }
 
-int16_t wiz_send_frame(uint8_t *buf, uint16_t len)
+int16_t wiz_send_frame(const uint8_t *buf, uint16_t len)
 {
     uint16_t freesize = 0;
 
