@@ -42,21 +42,11 @@
 #include <SPI.h>
 
 
-/**
- * @brief Default function to select chip.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
 void wizchip_cs_select(void)
 {
     digitalWrite(SS, LOW);
 }
 
-/**
- * @brief Default function to deselect chip.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
 void wizchip_cs_deselect(void)
 {
     digitalWrite(SS, HIGH);
@@ -106,9 +96,6 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
     return 0;
 }
 
-/**
-@brief  This function writes the data into W5200 registers.
-*/
 void     wizchip_write(uint16_t AddrSel, uint8_t wb )
 {
     //WIZCHIP_CRITICAL_ENTER();
@@ -122,10 +109,6 @@ void     wizchip_write(uint16_t AddrSel, uint8_t wb )
     wizchip_cs_deselect();
     //WIZCHIP_CRITICAL_EXIT();
 }
-/**
-@brief  This function reads the value from W5200 registers.
-*/
-uint8_t wizchip_read(uint16_t AddrSel)
 {
     uint8_t ret;
 
@@ -143,9 +126,6 @@ uint8_t wizchip_read(uint16_t AddrSel)
 }
 
 
-/**
-@brief  This function writes into W5200 memory(Buffer)
-*/
 void wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len)
 {
     uint16_t i = 0;
@@ -167,9 +147,6 @@ void wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len)
     //WIZCHIP_CRITICAL_EXIT();
 }
 
-/**
-@brief  This function reads into W5200 memory(Buffer)
-*/
 
 void     wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
