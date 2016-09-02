@@ -29,7 +29,7 @@ void printMACAddress(const uint8_t address[6])
     Serial.println();
 }
 
-int read(uint8_t *buffer, uint16_t bufsize)
+int read_frame(uint8_t *buffer, uint16_t bufsize)
 {
     uint16_t len = getSn_RX_RSR(sockNum);
     if ( len > 0 )
@@ -108,7 +108,7 @@ uint8_t buffer[800];
 
 void loop() {
 
-    uint16_t len = read(buffer, sizeof(buffer));
+    uint16_t len = read_frame(buffer, sizeof(buffer));
     if ( len > 0 ) {
         Serial.print("len=");
         Serial.println(len, DEC);
