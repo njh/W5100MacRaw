@@ -344,3 +344,83 @@ void wiz_recv_ignore(uint8_t sn, uint16_t len)
     ptr += len;
     setSn_RX_RD(sn,ptr);
 }
+
+
+
+const int sockNum = 0;
+
+int wiz_read_frame(uint8_t *buffer, uint16_t bufsize)
+{
+    uint16_t len = getSn_RX_RSR(sockNum);
+    if ( len > 0 )
+    {
+        uint8_t head[2];
+        uint16_t data_len=0;
+
+        wiz_recv_data(sockNum, head, 2);
+        setSn_CR(sockNum, Sn_CR_RECV);
+        while(getSn_CR(sockNum));
+
+        data_len = head[0];
+        data_len = (data_len<<8) + head[1];
+        data_len -= 2;
+
+        if(data_len > bufsize)
+        {
+            Serial.println("Packet is bigger than buffer");
+            return 0;
+        }
+
+        wiz_recv_data( sockNum, buffer, data_len );
+        setSn_CR(sockNum, Sn_CR_RECV);
+        while(getSn_CR(sockNum));
+
+        return data_len;
+    }
+
+    return 0;
+}
+
+int16_t wiz_send_frame(uint8_t *buf, uint16_t len)
+{
+    uint16_t freesize = 0;
+
+    // check size not to exceed MAX size.
+    freesize = getSn_TxMAX(sockNum);
+    if (len > freesize) len = freesize;
+    
+    // Wait for space in the transmit buffer
+    while(1)
+    {
+        freesize = getSn_TX_FSR(sockNum);
+        if(getSn_SR(sockNum) == SOCK_CLOSED) {
+            Serial.println("Socket closed");
+            return -1;
+        }
+        if(len <= freesize) break;
+    };
+    wiz_send_data(sockNum, buf, len);
+
+
+    setSn_CR(sockNum, Sn_CR_SEND);
+    /* wait to process the command... */
+    while(getSn_CR(sockNum));
+    while(1)
+    {
+        uint8_t tmp = getSn_IR(sockNum);
+        if(tmp & Sn_IR_SENDOK)
+        {
+            setSn_IR(sockNum, Sn_IR_SENDOK);
+            Serial.println("Sn_IR_SENDOK");
+            break;
+        }
+        else if(tmp & Sn_IR_TIMEOUT)
+        {
+            setSn_IR(sockNum, Sn_IR_TIMEOUT);
+            Serial.println("Timeout");
+            return -1;
+        }
+    }
+
+    return len;
+}

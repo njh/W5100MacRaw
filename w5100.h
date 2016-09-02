@@ -1698,6 +1698,10 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
 void wiz_recv_ignore(uint8_t sn, uint16_t len);
 
 
+int wiz_read_frame(uint8_t *buffer, uint16_t bufsize);
+int16_t wiz_send_frame(uint8_t *buf, uint16_t len);
+
+
 #endif //_W5100_H_
 
 
