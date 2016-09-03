@@ -130,9 +130,13 @@ void Wiznet5100::wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
     //WIZCHIP_CRITICAL_EXIT();
 }
 
-///////////////////////////////////
-// Socket N regsiter IO function //
-///////////////////////////////////
+void Wiznet5100::setSn_CR(uint8_t cr) {
+    // Write the command to the Command Register
+    wizchip_write(Sn_CR, cr);
+    
+    // Now wait for the command to complete
+    while( wizchip_read(Sn_CR) );
+}
 
 uint16_t Wiznet5100::getSn_TX_FSR()
 {
@@ -275,9 +279,6 @@ boolean Wiznet5100::begin(const uint8_t *mac_address)
     setSn_MR(Sn_MR_MACRAW);
     setSn_CR(Sn_CR_OPEN);
 
-    /* wait to process the command... */
-    while( getSn_CR() ) ;
-
     if (getSn_SR() != SOCK_MACRAW) {
         Serial.println("Failed to put socket 0 into MACRaw mode");
         return false;
@@ -298,7 +299,6 @@ uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
 
         wizchip_recv_data(head, 2);
         setSn_CR(Sn_CR_RECV);
-        while(getSn_CR());
 
         data_len = head[0];
         data_len = (data_len<<8) + head[1];
@@ -312,7 +312,6 @@ uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
 
         wizchip_recv_data(buffer, data_len );
         setSn_CR(Sn_CR_RECV);
-        while(getSn_CR());
 
         return data_len;
     }
@@ -340,10 +339,7 @@ uint16_t Wiznet5100::sendFrame(const uint8_t *buf, uint16_t len)
     };
     wizchip_send_data(buf, len);
 
-
     setSn_CR(Sn_CR_SEND);
-    /* wait to process the command... */
-    while(getSn_CR());
 
     while(1)
     {
