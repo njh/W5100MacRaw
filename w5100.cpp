@@ -266,6 +266,16 @@ boolean Wiznet5100::begin(const uint8_t *mac_address)
     return true;
 }
 
+void Wiznet5100::end()
+{
+    setSn_CR(Sn_CR_CLOSE);
+
+    // clear all interrupt of the socket
+    setSn_IR(0xFF);
+
+    // Wait for socket to change to closed
+    while(getSn_SR() != SOCK_CLOSED);
+}
 
 uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
 {

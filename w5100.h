@@ -64,6 +64,11 @@ public:
     boolean begin(const uint8_t *address);
 
     /**
+     * Shut down the Ethernet controlled
+     */
+    void end();
+  
+    /**
      * Send an Ethernet frame
      * @param data a pointer to the data to send
      * @param datalen the length of the data in the packet
