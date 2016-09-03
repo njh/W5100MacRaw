@@ -110,19 +110,34 @@ private:
     void wizchip_sw_reset(void);
 
     /**
-     * It reads 1 byte value from a register.
+     * Reads a 1 byte value from a register.
      * @param AddrSel Register address
      * @return The value of register
      */
     uint8_t wizchip_read(uint16_t AddrSel);
 
     /**
-     * It writes 1 byte value to a register.
+     * Reads a 2 byte value from a register.
+     * @param AddrSel Register address
+     * @return The value of register
+     */
+    uint16_t wizchip_read_word(uint16_t AddrSel);
+
+    /**
+     * Writes a 1 byte value to a register.
      * @param AddrSel Register address
      * @param wb Write data
      * @return void
      */
-    void wizchip_write(uint16_t AddrSel, uint8_t wb );
+    void wizchip_write(uint16_t AddrSel, uint8_t wb);
+
+    /**
+     * Writes a 2 byte value to a register.
+     * @param AddrSel Register address
+     * @param wb Write data
+     * @return void
+     */
+    void wizchip_write_word(uint16_t AddrSel, uint16_t word);
 
     /**
      * It reads sequence data from registers.
@@ -367,7 +382,7 @@ private:
      * @sa GetSn_TX_WR()
      */
     inline uint16_t getSn_TX_WR() {
-        return ((uint16_t)wizchip_read(Sn_TX_WR) << 8) + wizchip_read(Sn_TX_WR + 1);
+        return wizchip_read_word(Sn_TX_WR);
     }
 
     /**
@@ -376,8 +391,7 @@ private:
      * @sa GetSn_TX_WR()
      */
     inline void setSn_TX_WR(uint16_t txwr) {
-        wizchip_write(Sn_TX_WR,   (uint8_t)(txwr>>8));
-        wizchip_write(Sn_TX_WR+1, (uint8_t) txwr);
+        wizchip_write_word(Sn_TX_WR, txwr);
     }
 
     /**
@@ -386,7 +400,7 @@ private:
      * @sa setSn_RX_RD()
      */
     inline uint16_t getSn_RX_RD() {
-        return ((uint16_t)wizchip_read(Sn_RX_RD) << 8) + wizchip_read(Sn_RX_RD + 1);
+        return wizchip_read_word(Sn_RX_RD);
     }
 
     /**
@@ -395,8 +409,7 @@ private:
      * @sa getSn_RX_RD()
      */
     inline void setSn_RX_RD(uint16_t rxrd) {
-        wizchip_write(Sn_RX_RD,   (uint8_t)(rxrd>>8));
-        wizchip_write(Sn_RX_RD+1, (uint8_t) rxrd);
+        wizchip_write_word(Sn_RX_RD, rxrd);
     }
 
     /**

@@ -57,77 +57,55 @@ void Wiznet5100::wizchip_sw_reset()
 
 void Wiznet5100::wizchip_write(uint16_t AddrSel, uint8_t wb )
 {
-    //WIZCHIP_CRITICAL_ENTER();
     wizchip_cs_select();
-
     SPI.transfer(0xF0);
     SPI.transfer((AddrSel & 0xFF00) >>  8);
     SPI.transfer((AddrSel & 0x00FF) >>  0);
     SPI.transfer(wb);    // Data write (write 1byte data)
-
     wizchip_cs_deselect();
-    //WIZCHIP_CRITICAL_EXIT();
 }
 
+void Wiznet5100::wizchip_write_word(uint16_t AddrSel, uint16_t word)
+{
+    wizchip_write(AddrSel,   (uint8_t)(word>>8));
+    wizchip_write(AddrSel+1, (uint8_t) word);
+}
 
 uint8_t Wiznet5100::wizchip_read(uint16_t AddrSel)
 {
     uint8_t ret;
 
-    //WIZCHIP_CRITICAL_ENTER();
     wizchip_cs_select();
-
     SPI.transfer(0x0F);
     SPI.transfer((AddrSel & 0xFF00) >>  8);
     SPI.transfer((AddrSel & 0x00FF) >>  0);
     ret = SPI.transfer(0);
-
     wizchip_cs_deselect();
-    //WIZCHIP_CRITICAL_EXIT();
+
     return ret;
+}
+
+uint16_t Wiznet5100::wizchip_read_word(uint16_t AddrSel)
+{
+    return ((uint16_t)wizchip_read(AddrSel) << 8) + wizchip_read(AddrSel + 1);
 }
 
 
 void Wiznet5100::wizchip_write_buf(uint16_t AddrSel, const uint8_t* pBuf, uint16_t len)
 {
-    uint16_t i = 0;
-
-    //WIZCHIP_CRITICAL_ENTER();
-    wizchip_cs_select();
-
-    for(i = 0; i < len; i++)
+    for(uint16_t i = 0; i < len; i++)
     {
-        wizchip_cs_select();
-        SPI.transfer(0xF0);
-        SPI.transfer(((AddrSel+i) & 0xFF00) >>  8);
-        SPI.transfer(((AddrSel+i) & 0x00FF) >>  0);
-        SPI.transfer(pBuf[i]);    // Data write (write 1byte data)
-        wizchip_cs_deselect();
+        wizchip_write(AddrSel + i, pBuf[i]);
     }
-
-    wizchip_cs_deselect();
-    //WIZCHIP_CRITICAL_EXIT();
 }
 
 
 void Wiznet5100::wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
-    uint16_t i = 0;
-    //WIZCHIP_CRITICAL_ENTER();
-    wizchip_cs_select();
-
-    for(i = 0; i < len; i++)
+    for(uint16_t i = 0; i < len; i++)
     {
-        wizchip_cs_select();
-        SPI.transfer(0x0F);
-        SPI.transfer(((AddrSel+i) & 0xFF00) >>  8);
-        SPI.transfer(((AddrSel+i) & 0x00FF) >>  0);
-        pBuf[i] = SPI.transfer(0);
-        wizchip_cs_deselect();
+        pBuf[i] = wizchip_read(AddrSel + i);
     }
-
-    wizchip_cs_deselect();
-    //WIZCHIP_CRITICAL_EXIT();
 }
 
 void Wiznet5100::setSn_CR(uint8_t cr) {
