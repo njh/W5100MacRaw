@@ -134,34 +134,34 @@ void Wiznet5100::wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
 // Socket N regsiter IO function //
 ///////////////////////////////////
 
-uint16_t Wiznet5100::getSn_TX_FSR(uint8_t sn)
+uint16_t Wiznet5100::getSn_TX_FSR()
 {
     uint16_t val=0,val1=0;
     do
     {
-        val1 = wizchip_read(Sn_TX_FSR(sn));
-        val1 = (val1 << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_FSR(sn),1));
+        val1 = wizchip_read(Sn_TX_FSR(MacRawSockNum));
+        val1 = (val1 << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_FSR(MacRawSockNum),1));
         if (val1 != 0)
         {
-            val = wizchip_read(Sn_TX_FSR(sn));
-            val = (val << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_FSR(sn),1));
+            val = wizchip_read(Sn_TX_FSR(MacRawSockNum));
+            val = (val << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_FSR(MacRawSockNum),1));
         }
     } while (val != val1);
     return val;
 }
 
 
-uint16_t Wiznet5100::getSn_RX_RSR(uint8_t sn)
+uint16_t Wiznet5100::getSn_RX_RSR()
 {
     uint16_t val=0,val1=0;
     do
     {
-        val1 = wizchip_read(Sn_RX_RSR(sn));
-        val1 = (val1 << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_RSR(sn),1));
+        val1 = wizchip_read(Sn_RX_RSR(MacRawSockNum));
+        val1 = (val1 << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_RSR(MacRawSockNum),1));
         if (val1 != 0)
         {
-            val = wizchip_read(Sn_RX_RSR(sn));
-            val = (val << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_RSR(sn),1));
+            val = wizchip_read(Sn_RX_RSR(MacRawSockNum));
+            val = (val << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_RSR(MacRawSockNum),1));
         }
     } while (val != val1);
     return val;
@@ -178,21 +178,21 @@ the data in transmite buffer. Here also take care of the condition while it exce
 the Tx memory uper-bound of socket.
 
 */
-void Wiznet5100::wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len)
+void Wiznet5100::wizchip_send_data(const uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr;
     uint16_t size;
     uint16_t dst_mask;
     uint16_t dst_ptr;
 
-    ptr = getSn_TX_WR(sn);
+    ptr = getSn_TX_WR(MacRawSockNum);
 
-    dst_mask = ptr & getSn_TxMASK(sn);
+    dst_mask = ptr & getSn_TxMASK(MacRawSockNum);
     dst_ptr = TxBufferAddress + dst_mask;
 
-    if (dst_mask + len > getSn_TxMAX(sn))
+    if (dst_mask + len > getSn_TxMAX(MacRawSockNum))
     {
-        size = getSn_TxMAX(sn) - dst_mask;
+        size = getSn_TxMAX(MacRawSockNum) - dst_mask;
         wizchip_write_buf(dst_ptr, wizdata, size);
         wizdata += size;
         size = len - size;
@@ -206,7 +206,7 @@ void Wiznet5100::wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t 
 
     ptr += len;
 
-    setSn_TX_WR(sn, ptr);
+    setSn_TX_WR(MacRawSockNum, ptr);
 }
 
 
@@ -220,22 +220,22 @@ It calculate the actual physical address where one has to read
 the data from Receive buffer. Here also take care of the condition while it exceed
 the Rx memory uper-bound of socket.
 */
-void Wiznet5100::wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
+void Wiznet5100::wizchip_recv_data(uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr;
     uint16_t size;
     uint16_t src_mask;
     uint16_t src_ptr;
 
-    ptr = getSn_RX_RD(sn);
+    ptr = getSn_RX_RD(MacRawSockNum);
 
-    src_mask = ptr & getSn_RxMASK(sn);
+    src_mask = ptr & getSn_RxMASK(MacRawSockNum);
     src_ptr = (RxBufferAddress + src_mask);
 
 
-    if( (src_mask + len) > getSn_RxMAX(sn) )
+    if( (src_mask + len) > getSn_RxMAX(MacRawSockNum) )
     {
-        size = getSn_RxMAX(sn) - src_mask;
+        size = getSn_RxMAX(MacRawSockNum) - src_mask;
         wizchip_read_buf(src_ptr, wizdata, size);
         wizdata += size;
         size = len - size;
@@ -249,7 +249,7 @@ void Wiznet5100::wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
 
     ptr += len;
 
-    setSn_RX_RD(sn, ptr);
+    setSn_RX_RD(MacRawSockNum, ptr);
 }
 
 
@@ -290,13 +290,13 @@ boolean Wiznet5100::begin(const uint8_t *mac_address)
 
 uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
 {
-    uint16_t len = getSn_RX_RSR(MacRawSockNum);
+    uint16_t len = getSn_RX_RSR();
     if ( len > 0 )
     {
         uint8_t head[2];
         uint16_t data_len=0;
 
-        wizchip_recv_data(MacRawSockNum, head, 2);
+        wizchip_recv_data(head, 2);
         setSn_CR(MacRawSockNum, Sn_CR_RECV);
         while(getSn_CR(MacRawSockNum));
 
@@ -310,7 +310,7 @@ uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
             return 0;
         }
 
-        wizchip_recv_data( MacRawSockNum, buffer, data_len );
+        wizchip_recv_data(buffer, data_len );
         setSn_CR(MacRawSockNum, Sn_CR_RECV);
         while(getSn_CR(MacRawSockNum));
 
@@ -331,14 +331,14 @@ uint16_t Wiznet5100::sendFrame(const uint8_t *buf, uint16_t len)
     // Wait for space in the transmit buffer
     while(1)
     {
-        freesize = getSn_TX_FSR(MacRawSockNum);
+        freesize = getSn_TX_FSR();
         if(getSn_SR(MacRawSockNum) == SOCK_CLOSED) {
             Serial.println("Socket closed");
             return -1;
         }
         if(len <= freesize) break;
     };
-    wizchip_send_data(MacRawSockNum, buf, len);
+    wizchip_send_data(buf, len);
 
 
     setSn_CR(MacRawSockNum, Sn_CR_SEND);

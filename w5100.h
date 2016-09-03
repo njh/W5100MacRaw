@@ -1601,7 +1601,7 @@ public:
     uint16_t readFrame(uint8_t *buffer, uint16_t bufsize);
 
 private:
-    const int MacRawSockNum = 0;
+    const uint8_t MacRawSockNum = 0;
     const uint16_t TxBufferAddress = 0x4000;  /* Internal Tx buffer address of the iinchip */
     const uint16_t RxBufferAddress = 0x6000;  /* Internal Rx buffer address of the iinchip */
 
@@ -1678,7 +1678,7 @@ private:
      * @param len Data length
      * @sa recv_data()
      */
-    void wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len);
+    void wizchip_send_data(const uint8_t *wizdata, uint16_t len);
 
     /**
      * @brief It copies data to your buffer from internal RX memory
@@ -1693,21 +1693,21 @@ private:
      * @param len Data length
      * @sa wiz_send_data()
      */
-    void wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
+    void wizchip_recv_data(uint8_t *wizdata, uint16_t len);
 
     /**
      * @brief Get @ref Sn_TX_FSR register
      * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
      * @return uint16_t. Value of @ref Sn_TX_FSR.
      */
-    uint16_t getSn_TX_FSR(uint8_t sn);
+    uint16_t getSn_TX_FSR();
 
     /**
      * @brief Get @ref Sn_RX_RSR register
      * @param (uint8_t)sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
      * @return uint16_t. Value of @ref Sn_RX_RSR.
      */
-    uint16_t getSn_RX_RSR(uint8_t sn);
+    uint16_t getSn_RX_RSR();
 
 
     int8_t _cs;
