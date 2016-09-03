@@ -43,38 +43,6 @@
 
 
 
-int8_t Wiznet5100::wizchip_init(uint8_t* txsize, uint8_t* rxsize)
-{
-    int8_t i;
-    int8_t tmp = 0;
-    wizchip_sw_reset();
-    if(txsize)
-    {
-        tmp = 0;
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-        {
-            tmp += txsize[i];
-            if(tmp > 16) return -1;
-        }
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-            setSn_TXBUF_SIZE(i, txsize[i]);
-    }
-    if(rxsize)
-    {
-        tmp = 0;
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-        {
-            tmp += rxsize[i];
-            if(tmp > 16) return -1;
-        }
-
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-            setSn_RXBUF_SIZE(i, rxsize[i]);
-    }
-    return 0;
-}
-
-
 void Wiznet5100::wizchip_sw_reset()
 {
     uint8_t mac[6];
@@ -322,7 +290,7 @@ boolean Wiznet5100::begin(const uint8_t *mac_address)
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
 
-    wizchip_init(NULL, NULL);
+    wizchip_sw_reset();
 
     setSHAR(mac_address);
 

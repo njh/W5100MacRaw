@@ -1632,16 +1632,6 @@ private:
 
     /**
 
-     * @brief Initializes WIZCHIP with socket buffer size
-     * @param txsize Socket tx buffer sizes. If null, initialized the default size 2KB.
-     * @param rxsize Socket rx buffer sizes. If null, initialized the default size 2KB.
-     * @return 0 : succcess \n
-     *        -1 : fail. Invalid buffer size
-     */
-    int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
-
-    /**
-
      * @brief It reads 1 byte value from a register.
      * @param AddrSel Register address
      * @return The value of register
