@@ -149,17 +149,6 @@ uint16_t Wiznet5100::getSn_RX_RSR()
     return val;
 }
 
-/**
-@brief  This function is being called by send() and sendto() function also. for copy the data form application buffer to Transmite buffer of the chip.
-
-This function read the Tx write pointer register and after copy the data in buffer update the Tx write pointer
-register. User should read upper byte first and lower byte later to get proper value.
-And this function is being used for copy the data form application buffer to Transmite
-buffer of the chip. It calculate the actual physical address where one has to write
-the data in transmite buffer. Here also take care of the condition while it exceed
-the Tx memory uper-bound of socket.
-
-*/
 void Wiznet5100::wizchip_send_data(const uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr;
@@ -191,17 +180,6 @@ void Wiznet5100::wizchip_send_data(const uint8_t *wizdata, uint16_t len)
     setSn_TX_WR(ptr);
 }
 
-
-/**
-@brief  This function is being called by recv() also. This function is being used for copy the data form Receive buffer of the chip to application buffer.
-
-This function read the Rx read pointer register
-and after copy the data from receive buffer update the Rx write pointer register.
-User should read upper byte first and lower byte later to get proper value.
-It calculate the actual physical address where one has to read
-the data from Receive buffer. Here also take care of the condition while it exceed
-the Rx memory uper-bound of socket.
-*/
 void Wiznet5100::wizchip_recv_data(uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr;
@@ -325,8 +303,8 @@ uint16_t Wiznet5100::sendFrame(const uint8_t *buf, uint16_t len)
         }
         if(len <= freesize) break;
     };
-    wizchip_send_data(buf, len);
 
+    wizchip_send_data(buf, len);
     setSn_CR(Sn_CR_SEND);
 
     while(1)
