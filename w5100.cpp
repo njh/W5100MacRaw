@@ -167,28 +167,6 @@ uint16_t Wiznet5100::getSn_RX_RSR(uint8_t sn)
     return val;
 }
 
-/////////////////////////////////////
-// Sn_TXBUF & Sn_RXBUF IO function //
-/////////////////////////////////////
-uint16_t Wiznet5100::getSn_RxBASE(uint8_t sn)
-{
-    int8_t  i;
-    uint16_t rxbase = _WIZCHIP_IO_RXBUF_;
-    for(i = 0; i < sn; i++)
-        rxbase += getSn_RxMAX(i);
-
-    return rxbase;
-}
-
-uint16_t Wiznet5100::getSn_TxBASE(uint8_t sn)
-{
-    int8_t  i;
-    uint16_t txbase = _WIZCHIP_IO_TXBUF_;
-    for(i = 0; i < sn; i++)
-        txbase += getSn_TxMAX(i);
-    return txbase;
-}
-
 /**
 @brief  This function is being called by send() and sendto() function also. for copy the data form application buffer to Transmite buffer of the chip.
 
@@ -210,7 +188,7 @@ void Wiznet5100::wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t 
     ptr = getSn_TX_WR(sn);
 
     dst_mask = ptr & getSn_TxMASK(sn);
-    dst_ptr = getSn_TxBASE(sn) + dst_mask;
+    dst_ptr = TxBufferAddress + dst_mask;
 
     if (dst_mask + len > getSn_TxMAX(sn))
     {
@@ -218,7 +196,7 @@ void Wiznet5100::wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t 
         wizchip_write_buf(dst_ptr, wizdata, size);
         wizdata += size;
         size = len - size;
-        dst_ptr = getSn_TxBASE(sn);
+        dst_ptr = TxBufferAddress;
         wizchip_write_buf(dst_ptr, wizdata, size);
     }
     else
@@ -252,7 +230,7 @@ void Wiznet5100::wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
     ptr = getSn_RX_RD(sn);
 
     src_mask = ptr & getSn_RxMASK(sn);
-    src_ptr = (getSn_RxBASE(sn) + src_mask);
+    src_ptr = (RxBufferAddress + src_mask);
 
 
     if( (src_mask + len) > getSn_RxMAX(sn) )
@@ -261,7 +239,7 @@ void Wiznet5100::wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
         wizchip_read_buf(src_ptr, wizdata, size);
         wizdata += size;
         size = len - size;
-        src_ptr = getSn_RxBASE(sn);
+        src_ptr = RxBufferAddress;
         wizchip_read_buf(src_ptr, wizdata, size);
     }
     else

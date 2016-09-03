@@ -48,8 +48,6 @@
 
 #define _WIZCHIP_SN_BASE_  (0x0400)
 #define _WIZCHIP_SN_SIZE_  (0x0100)
-#define _WIZCHIP_IO_TXBUF_ (0x4000) /* Internal Tx buffer address of the iinchip */
-#define _WIZCHIP_IO_RXBUF_ (0x6000) /* Internal Rx buffer address of the iinchip */
 
 
 #define WIZCHIP_CREG_BLOCK      	      0x00   ///< Common register block
@@ -1604,6 +1602,8 @@ public:
 
 private:
     const int MacRawSockNum = 0;
+    const uint16_t TxBufferAddress = 0x4000;  /* Internal Tx buffer address of the iinchip */
+    const uint16_t RxBufferAddress = 0x6000;  /* Internal Rx buffer address of the iinchip */
 
     /**
      * @brief Default function to select chip.
@@ -1694,20 +1694,6 @@ private:
      * @sa wiz_send_data()
      */
     void wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
-
-    /**
-     * @brief Get the base address of socket sn RX buffer.
-     * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
-     * @return uint16_t. Value of Socket n RX buffer base address.
-     */
-    uint16_t getSn_RxBASE(uint8_t sn);
-
-    /**
-     * @brief Get the base address of socket sn TX buffer.
-     * @param sn Socket number. It should be <b>0 ~ @ref \_WIZCHIP_SOCK_NUM_</b>.
-     * @return uint16_t. Value of Socket n TX buffer base address.
-     */
-    uint16_t getSn_TxBASE(uint8_t sn);
 
     /**
      * @brief Get @ref Sn_TX_FSR register
