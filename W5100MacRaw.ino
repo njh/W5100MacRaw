@@ -36,7 +36,7 @@ Wiznet5100 w5100;
 
 void setup() {
     // Setup serial port for debugging
-    Serial.begin(38400);
+    Serial.begin(115200);
     Serial.println("[W5100MacRaw]");
 
     w5100.begin(mac_address);
