@@ -202,6 +202,15 @@ void Wiznet5100::wizchip_recv_data(uint8_t *wizdata, uint16_t len)
     setS0_RX_RD(ptr);
 }
 
+void Wiznet5100::wizchip_recv_ignore(uint16_t len)
+{
+    uint16_t ptr;
+
+    ptr = getS0_RX_RD();
+    ptr += len;
+    setS0_RX_RD(ptr);
+}
+
 
 Wiznet5100::Wiznet5100(int8_t cs)
 {
