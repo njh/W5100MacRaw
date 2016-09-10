@@ -232,11 +232,12 @@ boolean Wiznet5100::begin(const uint8_t *mac_address)
     wizchip_sw_reset();
 
     setSHAR(_mac_address);
+
+    // Open Socket 0 in MACRaw mode
     setS0_MR(S0_MR_MACRAW);
     setS0_CR(S0_CR_OPEN);
-
     if (getS0_SR() != SOCK_MACRAW) {
-        Serial.println(F("Failed to put socket 0 into MACRaw mode"));
+        // Failed to put socket 0 into MACRaw mode
         return false;
     }
 
@@ -272,7 +273,7 @@ uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
 
         if(data_len > bufsize)
         {
-            Serial.println(F("Packet is bigger than buffer"));
+            // Packet is bigger than buffer - drop the packet
             wizchip_recv_ignore(data_len);
             setS0_CR(S0_CR_RECV);
             return 0;
@@ -301,7 +302,6 @@ uint16_t Wiznet5100::sendFrame(const uint8_t *buf, uint16_t len)
     {
         uint16_t freesize = getS0_TX_FSR();
         if(getS0_SR() == SOCK_CLOSED) {
-            Serial.println(F("Socket closed"));
             return -1;
         }
         if (len <= freesize) break;
@@ -313,16 +313,16 @@ uint16_t Wiznet5100::sendFrame(const uint8_t *buf, uint16_t len)
     while(1)
     {
         uint8_t tmp = getS0_IR();
-        if(tmp & S0_IR_SENDOK)
+        if (tmp & S0_IR_SENDOK)
         {
             setS0_IR(S0_IR_SENDOK);
-            Serial.println(F("S0_IR_SENDOK"));
+            // Packet sent ok
             break;
         }
-        else if(tmp & S0_IR_TIMEOUT)
+        else if (tmp & S0_IR_TIMEOUT)
         {
             setS0_IR(S0_IR_TIMEOUT);
-            Serial.println(F("Timeout"));
+            // There was a timeout
             return -1;
         }
     }
