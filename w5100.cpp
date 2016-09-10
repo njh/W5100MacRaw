@@ -296,21 +296,15 @@ uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
 
 uint16_t Wiznet5100::sendFrame(const uint8_t *buf, uint16_t len)
 {
-    uint16_t freesize = 0;
-
-    // check size not to exceed MAX size.
-    freesize = getS0_TxMAX();
-    if (len > freesize) len = freesize;
-
     // Wait for space in the transmit buffer
     while(1)
     {
-        freesize = getS0_TX_FSR();
+        uint16_t freesize = getS0_TX_FSR();
         if(getS0_SR() == SOCK_CLOSED) {
             Serial.println(F("Socket closed"));
             return -1;
         }
-        if(len <= freesize) break;
+        if (len <= freesize) break;
     };
 
     wizchip_send_data(buf, len);
