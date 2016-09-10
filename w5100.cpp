@@ -232,7 +232,6 @@ boolean Wiznet5100::begin(const uint8_t *mac_address)
     wizchip_sw_reset();
 
     setSHAR(_mac_address);
-
     setS0_MR(S0_MR_MACRAW);
     setS0_CR(S0_CR_OPEN);
 
@@ -274,10 +273,12 @@ uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
         if(data_len > bufsize)
         {
             Serial.println(F("Packet is bigger than buffer"));
+            wizchip_recv_ignore(data_len);
+            setS0_CR(S0_CR_RECV);
             return 0;
         }
 
-        wizchip_recv_data(buffer, data_len );
+        wizchip_recv_data(buffer, data_len);
         setS0_CR(S0_CR_RECV);
 
         // W5100 doesn't have any built-in MAC address filtering
