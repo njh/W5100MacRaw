@@ -29,7 +29,7 @@ void printMACAddress(const uint8_t address[6])
 
 
 const byte mac_address[] = {
-    0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
+    0xae, 0x03, 0xf3, 0xc7, 0x08, 0x78
 };
 
 Wiznet5100 w5100;
@@ -44,12 +44,13 @@ void setup() {
 
 
 uint8_t buffer[800];
+uint8_t send_count=0;
 
 void loop() {
 
     uint16_t len = w5100.readFrame(buffer, sizeof(buffer));
     if ( len > 0 ) {
-        Serial.print("len=");
+        Serial.print("Len=");
         Serial.println(len, DEC);
 
         Serial.print("Dest=");
@@ -64,21 +65,18 @@ void loop() {
         printPaddedHex(buffer[12]);
         printPaddedHex(buffer[13]);
         Serial.println();
+        
+        // Reply to the 0x88B5 Local Experimental Ethertype
+        if (buffer[12] == 0x88 && buffer[13] == 0xB5) {
+            Serial.print("Byte 15=");
+            Serial.println(buffer[15], DEC);
+
+            memcpy(&buffer[0], &buffer[6], 6);   // Set Destination to Source
+            memcpy(&buffer[6], mac_address, 6);  // Set Source to our MAC address
+            buffer[14] = send_count++;
+            w5100.sendFrame(buffer, len);
+        }
 
         Serial.println();
-    }
-
-
-    static unsigned long nextMessage = millis();
-    if ((long)(millis() - nextMessage) >= 0) {
-        Serial.println("Sending test message.");
-        memcpy(&buffer[0], "\xff\xff\xff\xff\xff\xff", 6);
-        memcpy(&buffer[6], mac_address, 6);
-        buffer[12] = 0x88;    // Local Experimental Ethertype
-        buffer[13] = 0xB5;
-        memcpy(&buffer[14], "Test", 4);
-
-        w5100.sendFrame(buffer, 6 + 6 + 2 + 4);
-        nextMessage = millis() + 5000;
     }
 }
