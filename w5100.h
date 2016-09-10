@@ -83,6 +83,8 @@ private:
     const uint16_t TxBufferAddress = 0x4000;  /* Internal Tx buffer address of the iinchip */
     const uint16_t RxBufferAddress = 0x6000;  /* Internal Rx buffer address of the iinchip */
 
+    uint8_t _mac_address[6];
+
     /**
      * Default function to select chip.
      * @note This function help not to access wrong address. If you do not describe this function or register any functions,

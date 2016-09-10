@@ -38,13 +38,10 @@
 
 void Wiznet5100::wizchip_sw_reset()
 {
-    uint8_t mac[6];
-    getSHAR(mac);
-
     setMR(MR_RST);
     getMR(); // for delay
 
-    setSHAR(mac);
+    setSHAR(_mac_address);
 }
 
 
@@ -104,7 +101,7 @@ void Wiznet5100::wizchip_read_buf(uint16_t AddrSel, uint8_t* pBuf, uint16_t len)
 void Wiznet5100::setS0_CR(uint8_t cr) {
     // Write the command to the Command Register
     wizchip_write(S0_CR, cr);
-    
+
     // Now wait for the command to complete
     while( wizchip_read(S0_CR) );
 }
@@ -213,6 +210,8 @@ Wiznet5100::Wiznet5100(int8_t cs)
 
 boolean Wiznet5100::begin(const uint8_t *mac_address)
 {
+    memcpy(_mac_address, mac_address, 6);
+
     pinMode(_cs, OUTPUT);
     wizchip_cs_deselect();
 
@@ -223,7 +222,7 @@ boolean Wiznet5100::begin(const uint8_t *mac_address)
 
     wizchip_sw_reset();
 
-    setSHAR(mac_address);
+    setSHAR(_mac_address);
 
     setS0_MR(S0_MR_MACRAW);
     setS0_CR(S0_CR_OPEN);
@@ -272,7 +271,14 @@ uint16_t Wiznet5100::readFrame(uint8_t *buffer, uint16_t bufsize)
         wizchip_recv_data(buffer, data_len );
         setS0_CR(S0_CR_RECV);
 
-        return data_len;
+        // W5100 doesn't have any built-in MAC address filtering
+        if ((buffer[0] & 0x01) || memcmp(&buffer[0], _mac_address, 6) == 0)
+        {
+            // Addressed to an Ethernet multicast address or our unicast address
+            return data_len;
+        } else {
+            return 0;
+        }
     }
 
     return 0;
