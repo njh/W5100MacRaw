@@ -36,15 +36,6 @@
 
 
 
-void Wiznet5100::wizchip_sw_reset()
-{
-    setMR(MR_RST);
-    getMR(); // for delay
-
-    setSHAR(_mac_address);
-}
-
-
 void Wiznet5100::wizchip_write(uint16_t AddrSel, uint8_t wb )
 {
     wizchip_cs_select();
@@ -209,6 +200,14 @@ void Wiznet5100::wizchip_recv_ignore(uint16_t len)
     ptr = getS0_RX_RD();
     ptr += len;
     setS0_RX_RD(ptr);
+}
+
+void Wiznet5100::wizchip_sw_reset()
+{
+    setMR(MR_RST);
+    getMR(); // for delay
+
+    setSHAR(_mac_address);
 }
 
 
