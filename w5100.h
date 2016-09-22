@@ -131,6 +131,14 @@ private:
     uint16_t wizchip_read_word(uint16_t address);
 
     /**
+     * It reads sequence data from registers.
+     * @param address Register address
+     * @param pBuf Pointer buffer to read data
+     * @param len Data length
+     */
+    void wizchip_read_buf(uint16_t address, uint8_t* pBuf, uint16_t len);
+
+    /**
      * Writes a 1 byte value to a register.
      * @param address Register address
      * @param wb Write data
@@ -145,14 +153,6 @@ private:
      * @return void
      */
     void wizchip_write_word(uint16_t address, uint16_t word);
-
-    /**
-     * It reads sequence data from registers.
-     * @param address Register address
-     * @param pBuf Pointer buffer to read data
-     * @param len Data length
-     */
-    void wizchip_read_buf(uint16_t address, uint8_t* pBuf, uint16_t len);
 
     /**
      * It writes sequence data to registers.
