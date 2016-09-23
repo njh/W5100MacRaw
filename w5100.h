@@ -89,6 +89,8 @@ private:
     static const uint16_t TxBufferMask = TxBufferLength - 1;
     static const uint16_t RxBufferMask = RxBufferLength - 1;
 
+
+    int8_t _cs;
     uint8_t _mac_address[6];
 
     /**
@@ -436,10 +438,6 @@ private:
     inline void setSn_IR(uint8_t ir) {
         wizchip_write(Sn_IR, ir);
     }
-
-
-    int8_t _cs;
-
 };
 
 #endif //_W5100_H_
