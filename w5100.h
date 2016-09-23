@@ -61,7 +61,7 @@ public:
      * Shut down the Ethernet controlled
      */
     void end();
-  
+
     /**
      * Send an Ethernet frame
      * @param data a pointer to the data to send
@@ -78,6 +78,7 @@ public:
      *         or 0 if no packet was received
      */
     uint16_t readFrame(uint8_t *buffer, uint16_t bufsize);
+
 
 private:
     static const uint16_t TxBufferAddress = 0x4000;  /* Internal Tx buffer address of the iinchip */
