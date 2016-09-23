@@ -228,13 +228,13 @@ private:
         TMSR = 0x001B,  // Transmit Memory Size
     };
 
-    /** Socket 0 registers */
+    /** Socket registers */
     enum {
-        Sn_MR = 0x0400,     ///< Socket 0 Mode register(R/W)
-        Sn_CR = 0x0401,     ///< Socket 0 command register (R/W)
-        Sn_IR = 0x0402,     ///< Socket 0 interrupt register (R)
-        Sn_SR = 0x0403,     ///< Socket 0 status register (R)
-        Sn_PORT = 0x0404,   ///< source 0 port register (R/W)
+        Sn_MR = 0x0400,     ///< Socket Mode register(R/W)
+        Sn_CR = 0x0401,     ///< Socket command register (R/W)
+        Sn_IR = 0x0402,     ///< Socket interrupt register (R)
+        Sn_SR = 0x0403,     ///< Socket status register (R)
+        Sn_PORT = 0x0404,   ///< Source port register (R/W)
         Sn_DHAR = 0x0406,   ///< Peer MAC register address (R/W)
         Sn_DIPR = 0x040C,   ///< Peer IP register address (R/W)
         Sn_DPORT = 0x0410,  ///< Peer port register address (R/W)
@@ -258,7 +258,7 @@ private:
         MR_IND = 0x01,    ///< Indirect Bus Interface mode
     };
 
-    /** Socket 0 Mode Register values @ref Sn_MR */
+    /** Socket Mode Register values @ref Sn_MR */
     enum {
         Sn_MR_CLOSE = 0x00,  ///< Unused socket
         Sn_MR_TCP = 0x01,    ///< TCP
@@ -270,7 +270,7 @@ private:
         Sn_MR_MULTI = 0x80,  ///< support multicating
     };
 
-    /** Socket 0 Command Register values @ref Sn_CR */
+    /** Socket Command Register values */
     enum {
         Sn_CR_OPEN = 0x01,      ///< Initialise or open socket
         Sn_CR_CLOSE = 0x10,     ///< Close socket
@@ -280,7 +280,7 @@ private:
         Sn_CR_RECV = 0x40,      ///< Update RX buffer pointer and receive data
     };
 
-    /** Socket 0 Interrupt register values @ref Sn_IR */
+    /** Socket Interrupt register values */
     enum {
         Sn_IR_CON = 0x01,      ///< CON Interrupt
         Sn_IR_DISCON = 0x02,   ///< DISCON Interrupt
@@ -289,7 +289,7 @@ private:
         Sn_IR_SENDOK = 0x10,   ///< SEND_OK Interrupt
     };
 
-    /** Socket 0 Status register values @ref Sn_SR */
+    /** Socket Status Register values */
     enum {
         SOCK_CLOSED = 0x00,      ///< Closed
         SOCK_INIT = 0x13,        ///< Initiate state
